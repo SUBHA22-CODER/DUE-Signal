@@ -29,7 +29,7 @@ def deterministic_rank(deadlines: list[dict]) -> list[dict]:
         if is_future_fixture:
             hours_left = max((due - ref_now).total_seconds() / 3600, 0.1)
         else:
-            # Overdue items get high urgent boost; positive items decay with time
+            # Overdue items receive elevated urgency; upcoming items scale inversely with hours
             hours_left = max(actual_hours, 0.1) if not is_overdue else 0.05
 
         weight = float(d.get("weight_pct", 0) or 0)
@@ -56,25 +56,31 @@ def deterministic_rank(deadlines: list[dict]) -> list[dict]:
             "hours_remaining": round(actual_hours, 1)
         })
 
-    # Sort descending by score
-    ranked.sort(key=lambda x: x["score"], reverse=True)
+    # Deterministic tie-breaking:
+    # 1. Primary: Score descending (-x["score"])
+    # 2. Secondary: Earliest due date ascending (x["due_at"])
+    # 3. Tertiary: Assignment title alphabetical ascending (x["title"])
+    ranked.sort(key=lambda x: (-x["score"], x["due_at"], x.get("title", "")))
 
-    # Attach human-readable deterministic reason
+    # Attach human-readable deterministic reason & attribution
     for d in ranked:
         h = d["hours_remaining"]
         wt = d.get("weight_pct", 0)
         if d["is_overdue"]:
             overdue_h = abs(h)
-            d["deterministic_reason"] = f"OVERDUE by {overdue_h:.1f}h! Worth {wt}% of grade."
+            reason = f"OVERDUE by {overdue_h:.1f}h! Worth {wt}% of grade."
         else:
-            d["deterministic_reason"] = f"Due in {h:.0f}h, worth {wt}% of grade."
+            reason = f"Due in {h:.0f}h, worth {wt}% of grade."
+        d["deterministic_reason"] = reason
+        d["explanation"] = reason
+        d["explanation_source"] = "deterministic"
 
     return ranked
 
 
 def bedrock_reason(ranked: list[dict]) -> list[dict]:
-    """Add natural-language reasons via Strands + Bedrock.
-    On failure, returns ranked unchanged with bedrock_error on each item."""
+    """Enrich ranked items with Amazon Bedrock natural-language explanations.
+    Falls back gracefully and transparently to deterministic explanations on failure."""
     if not ranked:
         return ranked
     try:
@@ -98,9 +104,15 @@ def bedrock_reason(ranked: list[dict]) -> list[dict]:
         out_lines = [l.strip() for l in text.split("\n") if l.strip()]
         for i, d in enumerate(ranked):
             if i < len(out_lines):
-                d["bedrock_reason"] = out_lines[i].lstrip("0123456789.-) ")
+                cleaned = out_lines[i].lstrip("0123456789.-) ")
+                if cleaned:
+                    d["bedrock_reason"] = cleaned
+                    d["explanation"] = cleaned
+                    d["explanation_source"] = "bedrock"
         return ranked
     except Exception as exc:
         for d in ranked:
             d["bedrock_error"] = str(exc)
+            d["explanation"] = d["deterministic_reason"]
+            d["explanation_source"] = "deterministic"
         return ranked

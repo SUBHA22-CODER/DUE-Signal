@@ -3,582 +3,529 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DueSignal · Alexa+ Academic Deadline Triage</title>
+<title>DueSignal · Academic Deadline Triage MCP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-base: #06080e;
-    --bg-card: rgba(14, 20, 34, 0.75);
-    --bg-surface: #0b1120;
-    --border-subtle: rgba(255, 255, 255, 0.09);
-    --border-glow: rgba(0, 202, 224, 0.4);
-    --alexa-cyan: #00cae0;
-    --alexa-blue: #0073e6;
-    --alexa-glow: 0 0 28px rgba(0, 202, 224, 0.45);
+    --bg-base: #090d16;
+    --bg-surface: #0f172a;
+    --bg-elevated: #1e293b;
+    --border-subtle: #334155;
+    --border-focus: #38bdf8;
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
+    --accent: #0284c7;
+    --accent-hover: #0369a1;
+    --accent-light: rgba(2, 132, 199, 0.15);
     --success: #10b981;
+    --success-bg: rgba(16, 185, 129, 0.12);
     --warning: #f59e0b;
+    --warning-bg: rgba(245, 158, 11, 0.12);
     --danger: #ef4444;
+    --danger-bg: rgba(239, 68, 68, 0.12);
+    --ring: rgba(56, 189, 248, 0.35);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: radial-gradient(circle at 50% 0%, #101c38 0%, var(--bg-base) 65%);
+    background-color: var(--bg-base);
     color: var(--text-primary);
     min-height: 100vh;
     padding: 1.5rem 1rem 3rem;
-    overflow-x: hidden;
+    line-height: 1.5;
   }
 
   .container {
-    max-width: 1200px;
+    max-width: 1240px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
   }
 
-  /* Header Bar */
+  /* Header & System Status */
   header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    background: var(--bg-card);
-    backdrop-filter: blur(20px);
+    background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
-    border-radius: 18px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
   }
 
   .brand {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.85rem;
   }
 
-  .alexa-orb {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: conic-gradient(from 180deg at 50% 50%, var(--alexa-cyan), var(--alexa-blue), #38bdf8, var(--alexa-cyan));
-    box-shadow: var(--alexa-glow);
-    position: relative;
-    animation: rotateOrb 6s linear infinite;
+  .brand-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent) 0%, #0369a1 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease;
-  }
-
-  .alexa-orb::after {
-    content: '';
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: #090e1a;
-  }
-
-  .alexa-orb.speaking {
-    animation: pulseOrb 1.2s ease-in-out infinite alternate, rotateOrb 3s linear infinite;
-    box-shadow: 0 0 35px rgba(0, 202, 224, 0.8), 0 0 60px rgba(0, 115, 230, 0.4);
-    transform: scale(1.08);
-  }
-
-  .alexa-orb.listening {
-    animation: pulseListen 0.8s ease-in-out infinite alternate;
-    box-shadow: 0 0 40px rgba(16, 185, 129, 0.9);
-  }
-
-  @keyframes rotateOrb {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  @keyframes pulseOrb {
-    0% { transform: scale(1); filter: brightness(1); }
-    100% { transform: scale(1.1); filter: brightness(1.3); }
-  }
-
-  @keyframes pulseListen {
-    0% { transform: scale(1); filter: hue-rotate(90deg); }
-    100% { transform: scale(1.15); filter: hue-rotate(90deg) brightness(1.4); }
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
   }
 
   h1 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.45rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    background: linear-gradient(135deg, #ffffff 40%, var(--alexa-cyan) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.01em;
   }
 
   .subtitle {
     font-size: 0.78rem;
     color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
   }
 
-  .header-actions {
+  .system-meta {
     display: flex;
     align-items: center;
     gap: 0.65rem;
   }
 
-  .badge {
+  .health-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding: 0.3rem 0.65rem;
+    border-radius: 6px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+  }
+
+  .health-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+
+  .health-dot.offline {
+    background: var(--danger);
+  }
+
+  .btn {
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.45rem 0.85rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    padding: 0.35rem 0.75rem;
-    border-radius: 9999px;
-    background: rgba(0, 202, 224, 0.12);
-    border: 1px solid rgba(0, 202, 224, 0.3);
-    color: var(--alexa-cyan);
-    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.15s ease;
   }
 
-  .badge.live .badge-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--success);
-    box-shadow: 0 0 8px var(--success);
-    animation: blink 2s infinite;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .icon-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
-  }
-
-  .icon-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    border-color: rgba(255, 255, 255, 0.2);
-  }
-
-  .icon-btn.active {
-    background: rgba(0, 202, 224, 0.15);
-    border-color: var(--alexa-cyan);
-    color: var(--alexa-cyan);
-  }
-
-  /* Student Action Toolbar */
-  .action-bar {
-    background: var(--bg-card);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--border-subtle);
-    border-radius: 14px;
-    padding: 0.85rem 1.25rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  }
-
-  .action-left {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    flex-wrap: wrap;
+  .btn:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, var(--alexa-cyan) 0%, var(--alexa-blue) 100%);
-    color: #030712;
-    font-weight: 700;
-    border: none;
-    border-radius: 9px;
-    padding: 0.45rem 0.9rem;
-    cursor: pointer;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    transition: all 0.2s;
-  }
-
-  .btn-primary:hover {
-    box-shadow: var(--alexa-glow);
-    transform: translateY(-1px);
-  }
-
-  .btn-secondary {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-primary);
-    font-weight: 600;
-    border-radius: 9px;
-    padding: 0.45rem 0.85rem;
-    cursor: pointer;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    transition: all 0.2s;
-  }
-
-  .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.25);
-  }
-
-  .filter-tabs {
-    display: flex;
-    gap: 0.35rem;
-    background: #070b14;
-    padding: 0.25rem;
-    border-radius: 10px;
-    border: 1px solid var(--border-subtle);
-  }
-
-  .filter-tab {
-    font-size: 0.74rem;
-    font-weight: 600;
-    padding: 0.25rem 0.65rem;
-    border-radius: 7px;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .filter-tab.active {
-    background: rgba(0, 202, 224, 0.18);
-    color: var(--alexa-cyan);
-  }
-
-  /* Main Grid */
-  .grid {
-    display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 1.25rem;
-  }
-
-  @media (max-width: 900px) {
-    .grid { grid-template-columns: 1fr; }
-  }
-
-  .card {
-    background: var(--bg-card);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--border-subtle);
-    border-radius: 18px;
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-  }
-
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .card-title {
-    font-size: 0.92rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  /* Chat Box */
-  #chat {
-    background: #070b14;
-    border: 1px solid var(--border-subtle);
-    border-radius: 14px;
-    padding: 1rem;
-    height: 380px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-    scroll-behavior: smooth;
-  }
-
-  .msg {
-    max-width: 88%;
-    padding: 0.75rem 1rem;
-    border-radius: 14px;
-    font-size: 0.86rem;
-    line-height: 1.45;
-    word-break: break-word;
-    animation: fadeIn 0.2s ease-out;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .msg.user {
-    align-self: flex-end;
-    background: linear-gradient(135deg, var(--alexa-blue) 0%, #1d4ed8 100%);
-    color: #fff;
-    border-bottom-right-radius: 4px;
-    box-shadow: 0 4px 14px rgba(0, 115, 230, 0.3);
-  }
-
-  .msg.bot {
-    align-self: flex-start;
-    background: #0f172a;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: var(--text-primary);
-    border-bottom-left-radius: 4px;
-    white-space: pre-wrap;
-  }
-
-  .msg.bot.triage-card {
-    border-color: rgba(0, 202, 224, 0.3);
-    background: linear-gradient(180deg, #0f192e 0%, #0c1322 100%);
-  }
-
-  .msg.err {
-    align-self: flex-start;
-    background: rgba(239, 68, 68, 0.15);
-    border: 1px solid rgba(239, 68, 68, 0.35);
-    color: #fca5a5;
-  }
-
-  /* Quick Suggestion Chips */
-  .quick-chips {
-    display: flex;
-    gap: 0.45rem;
-    overflow-x: auto;
-    padding-bottom: 0.2rem;
-  }
-
-  .chip {
-    font-size: 0.74rem;
-    font-weight: 500;
-    padding: 0.35rem 0.75rem;
-    border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s;
-  }
-
-  .chip:hover {
-    background: rgba(0, 202, 224, 0.15);
-    border-color: var(--alexa-cyan);
+    background: var(--accent);
     color: #fff;
   }
-
-  /* Input Controls */
-  .input-group {
-    display: flex;
-    gap: 0.5rem;
+  .btn-primary:hover:not(:disabled) {
+    background: var(--accent-hover);
   }
-
-  input[type="text"] {
-    flex: 1;
-    background: #080d19;
-    border: 1px solid var(--border-subtle);
-    border-radius: 12px;
-    padding: 0.75rem 1rem;
-    color: #fff;
-    font-size: 0.88rem;
-    outline: none;
-    transition: all 0.2s;
-  }
-
-  input[type="text"]:focus {
-    border-color: var(--alexa-cyan);
-    box-shadow: 0 0 12px rgba(0, 202, 224, 0.25);
-  }
-
-  button#send {
-    background: linear-gradient(135deg, var(--alexa-cyan) 0%, var(--alexa-blue) 100%);
-    color: #030712;
-    font-weight: 700;
-    border: none;
-    border-radius: 12px;
-    padding: 0 1.25rem;
-    cursor: pointer;
-    font-size: 0.88rem;
-    transition: all 0.2s;
-  }
-
-  button#send:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: var(--alexa-glow);
-  }
-
-  button#send:disabled {
+  .btn-primary:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
 
-  /* Deadlines Column */
-  .deadline-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-    max-height: 480px;
-    overflow-y: auto;
+  .btn-secondary {
+    background: var(--bg-elevated);
+    border-color: var(--border-subtle);
+    color: var(--text-primary);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background: #334155;
+    border-color: #475569;
   }
 
-  .deadline-card {
-    background: rgba(11, 17, 30, 0.85);
+  .btn-danger {
+    background: var(--danger-bg);
+    border-color: rgba(239, 68, 68, 0.35);
+    color: #f87171;
+  }
+  .btn-danger:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.25);
+  }
+
+  /* Command Center KPI Banner */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .kpi-card {
+    background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
-    border-radius: 12px;
-    padding: 0.85rem;
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.45rem;
-    transition: all 0.2s ease;
+    gap: 0.25rem;
   }
 
-  .deadline-card:hover {
-    border-color: rgba(0, 202, 224, 0.4);
-    transform: translateY(-1px);
-  }
-
-  .deadline-card.overdue {
-    border-left: 3px solid var(--danger);
-    background: rgba(239, 68, 68, 0.05);
-  }
-
-  .deadline-card.critical {
-    border-left: 3px solid var(--warning);
-  }
-
-  .deadline-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .deadline-title {
+  .kpi-title {
+    font-size: 0.72rem;
     font-weight: 600;
-    font-size: 0.9rem;
-    color: #fff;
-  }
-
-  .course-badge {
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 0.2rem 0.5rem;
-    border-radius: 6px;
-    background: rgba(0, 115, 230, 0.2);
-    color: #60a5fa;
-    border: 1px solid rgba(0, 115, 230, 0.35);
-  }
-
-  .urgency-pill {
-    font-size: 0.68rem;
-    font-weight: 700;
-    padding: 0.15rem 0.5rem;
-    border-radius: 6px;
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
-  .urgency-pill.OVERDUE {
-    background: rgba(239, 68, 68, 0.25);
-    color: #f87171;
-    border: 1px solid rgba(239, 68, 68, 0.5);
-    animation: blink 1.5s infinite;
+  .kpi-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
   }
 
-  .urgency-pill.CRITICAL {
-    background: rgba(245, 158, 11, 0.2);
+  .kpi-note {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+  }
+
+  /* Main Workspace Layout */
+  .workspace {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 960px) {
+    .workspace { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 0.75rem;
+  }
+
+  .panel-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  /* Filters & Controls */
+  .filter-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .search-input {
+    flex: 1;
+    min-width: 180px;
+    background: var(--bg-base);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 0.45rem 0.75rem;
+    color: #fff;
+    font-size: 0.82rem;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 2px var(--ring);
+  }
+
+  select.control-select {
+    background: var(--bg-base);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 0.45rem 0.65rem;
+    color: #fff;
+    font-size: 0.82rem;
+  }
+
+  select.control-select:focus {
+    outline: none;
+    border-color: var(--border-focus);
+  }
+
+  /* Task / Deadline Cards */
+  .task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  .task-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color 0.15s ease;
+  }
+
+  .task-card:hover {
+    border-color: #475569;
+  }
+
+  .task-card.overdue {
+    border-left: 4px solid var(--danger);
+  }
+
+  .task-card.critical {
+    border-left: 4px solid var(--warning);
+  }
+
+  .task-card.completed {
+    opacity: 0.65;
+    border-left: 4px solid var(--success);
+  }
+
+  .task-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .task-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .task-card.completed .task-title {
+    text-decoration: line-through;
+    color: var(--text-muted);
+  }
+
+  .task-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .tag-course {
+    background: #1e3a8a;
+    color: #93c5fd;
+    border: 1px solid #2563eb;
+  }
+
+  .tag-overdue {
+    background: var(--danger-bg);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+  }
+
+  .tag-critical {
+    background: var(--warning-bg);
     color: #fbbf24;
     border: 1px solid rgba(245, 158, 11, 0.4);
   }
 
-  .urgency-pill.HIGH {
-    background: rgba(234, 179, 8, 0.15);
+  .tag-high {
+    background: rgba(234, 179, 8, 0.12);
     color: #fef08a;
     border: 1px solid rgba(234, 179, 8, 0.3);
   }
 
-  .urgency-pill.MEDIUM {
-    background: rgba(0, 202, 224, 0.15);
-    color: #38bdf8;
-    border: 1px solid rgba(0, 202, 224, 0.3);
+  .tag-medium {
+    background: var(--accent-light);
+    color: #7dd3fc;
+    border: 1px solid rgba(56, 189, 248, 0.3);
   }
 
-  .urgency-pill.LOW {
-    background: rgba(148, 163, 184, 0.15);
-    color: #94a3b8;
-    border: 1px solid rgba(148, 163, 184, 0.3);
+  .tag-low {
+    background: rgba(148, 163, 184, 0.12);
+    color: #cbd5e1;
+    border: 1px solid rgba(148, 163, 184, 0.25);
   }
 
-  .deadline-meta {
+  .task-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 0.78rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
-  .btn-complete {
-    font-size: 0.72rem;
-    font-weight: 600;
-    padding: 0.25rem 0.65rem;
+  .task-reason {
+    font-size: 0.78rem;
+    color: #cbd5e1;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 6px;
-    background: rgba(16, 185, 129, 0.15);
-    border: 1px solid rgba(16, 185, 129, 0.35);
-    color: var(--success);
-    cursor: pointer;
-    transition: all 0.2s;
+    padding: 0.4rem 0.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .btn-complete:hover {
-    background: rgba(16, 185, 129, 0.35);
+  .source-pill {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .source-pill.bedrock {
+    color: #a855f7;
+  }
+
+  .task-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .btn-sm {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+  }
+
+  /* Interactive Assistant Simulator Column */
+  .chat-box {
+    background: var(--bg-base);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 0.85rem;
+    height: 340px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .chat-msg {
+    max-width: 90%;
+    padding: 0.65rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.83rem;
+    line-height: 1.4;
+    white-space: pre-wrap;
+  }
+
+  .chat-msg.user {
+    align-self: flex-end;
+    background: var(--accent);
     color: #fff;
   }
 
-  /* Protocol Inspector */
-  #raw {
+  .chat-msg.bot {
+    align-self: flex-start;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+  }
+
+  .chat-msg.err {
+    align-self: flex-start;
+    background: var(--danger-bg);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #fca5a5;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .input-row input {
+    flex: 1;
+    background: var(--bg-base);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 0.55rem 0.85rem;
+    color: #fff;
+    font-size: 0.84rem;
+  }
+
+  .input-row input:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 2px var(--ring);
+  }
+
+  /* Technical Inspector */
+  details.inspector {
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    background: var(--bg-base);
+  }
+
+  details.inspector summary {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  pre.json-viewer {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
     color: #94a3b8;
     background: #040711;
-    border: 1px solid var(--border-subtle);
-    border-radius: 10px;
     padding: 0.75rem;
-    white-space: pre-wrap;
+    border-top: 1px solid var(--border-subtle);
     max-height: 160px;
     overflow-y: auto;
+    white-space: pre-wrap;
   }
 
   /* Modals */
@@ -586,7 +533,7 @@
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(4px);
     display: none;
     align-items: center;
     justify-content: center;
@@ -596,16 +543,16 @@
   .modal-overlay.open { display: flex; }
 
   .modal {
-    background: #0f172a;
+    background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
-    border-radius: 16px;
+    border-radius: 12px;
     padding: 1.5rem;
     max-width: 480px;
     width: 90%;
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
   }
 
   .form-group {
@@ -615,156 +562,182 @@
   }
 
   .form-group label {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 600;
     color: var(--text-secondary);
   }
 
   .form-group input, .form-group select {
-    background: #070c17;
+    background: var(--bg-base);
     border: 1px solid var(--border-subtle);
     border-radius: 8px;
-    padding: 0.65rem 0.85rem;
+    padding: 0.55rem 0.75rem;
     color: #fff;
     font-size: 0.85rem;
-    outline: none;
   }
 
   .form-group input:focus {
-    border-color: var(--alexa-cyan);
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 2px var(--ring);
   }
 </style>
 </head>
 <body>
 <div class="container">
-  <!-- Header -->
+  <!-- System Header -->
   <header>
     <div class="brand">
-      <div id="alexaOrb" class="alexa-orb"></div>
+      <div class="brand-logo">DS</div>
       <div>
         <h1>DueSignal</h1>
-        <div class="subtitle">
-          <span>Alexa+ Deadline Triage MCP Server</span>
-          <span>·</span>
-          <span style="color:var(--alexa-cyan)">Protocol 2025-11-25</span>
-        </div>
+        <div class="subtitle">Academic Deadline Triage · Alexa+-compatible MCP Protocol 2025-11-25</div>
       </div>
     </div>
-    <div class="header-actions">
-      <span class="badge live"><span class="badge-dot"></span> Streamable HTTP</span>
-      <button id="earconToggle" class="icon-btn active" title="Alexa Audio Earcon Chimes">🔔</button>
-      <button id="ttsToggle" class="icon-btn active" title="Toggle Alexa Speech Output">🔊</button>
-      <button id="tokenConfigBtn" class="icon-btn" title="Configure Auth Token">🔑</button>
+    <div class="system-meta">
+      <div id="healthBadge" class="health-pill">
+        <span id="healthDot" class="health-dot"></span>
+        <span id="healthText">Checking Server…</span>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="openTokenModal()">Config Auth</button>
+      <button id="ttsToggle" class="btn btn-secondary btn-sm" title="Toggle Spoken Speech">🔊 Voice On</button>
     </div>
   </header>
 
-  <!-- Real User Productivity Action Bar -->
-  <div class="action-bar">
-    <div class="action-left">
-      <button class="btn-primary" onclick="openAddModal()">
-        <span>➕</span>
-        <span>Add Deadline</span>
-      </button>
-
-      <button class="btn-secondary" onclick="document.getElementById('icsFileInput').click()">
-        <span>📅</span>
-        <span>Import Calendar (.ics)</span>
-      </button>
-      <input type="file" id="icsFileInput" accept=".ics,text/calendar" style="display:none" onchange="handleIcsUpload(event)">
-
-      <button class="btn-secondary" onclick="clearAllData()">
-        <span>🧹</span>
-        <span>Clear All</span>
-      </button>
+  <!-- Real Workload Command Center KPIs -->
+  <section class="kpi-grid">
+    <div class="kpi-card">
+      <span class="kpi-title">Active Workload</span>
+      <span id="kpiPending" class="kpi-value">—</span>
+      <span class="kpi-note">Pending assignments</span>
     </div>
-
-    <!-- Filter Tabs -->
-    <div class="filter-tabs">
-      <button class="filter-tab active" onclick="setFilter('all', this)">All Deadlines</button>
-      <button class="filter-tab" onclick="setFilter('week', this)">Next 7 Days</button>
-      <button class="filter-tab" onclick="setFilter('urgent', this)">Urgent & Overdue</button>
+    <div class="kpi-card">
+      <span class="kpi-title">Attention Required</span>
+      <span id="kpiCritical" class="kpi-value" style="color:var(--warning)">—</span>
+      <span id="kpiOverdueNote" class="kpi-note">0 overdue · 0 critical</span>
     </div>
-  </div>
-
-  <!-- Main Grid -->
-  <div class="grid">
-    <!-- Chat / Voice Column -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">🎙️ Simulated Alexa+ Voice Dialogue</span>
-        <span id="speechStatus" style="font-size:0.75rem; color:var(--text-muted)">Voice & Audio Earcons Active</span>
-      </div>
-
-      <div id="chat"></div>
-
-      <div class="quick-chips">
-        <span class="chip" onclick="quickSend('Alexa, what should I study tonight?')">⚡ What should I study tonight?</span>
-        <span class="chip" onclick="quickSend('Add CS301 OS project due 2026-10-25T23:59 worth 25%')">➕ Add OS Lab (25%)</span>
-        <span class="chip" onclick="quickSend('List all deadlines')">📋 List deadlines</span>
-      </div>
-
-      <div class="input-group">
-        <input id="input" type="text" placeholder="Talk to Alexa… e.g. “Alexa, what should I study tonight?”" autofocus />
-        <button id="micBtn" class="icon-btn" title="Speak via microphone" style="height:auto; width:46px;">🎙️</button>
-        <button id="send">Send</button>
-      </div>
-
-      <div class="card-header" style="margin-top:0.4rem">
-        <span style="font-size:0.75rem; color:var(--text-muted)">Streamable HTTP JSON-RPC 2.0 Trace</span>
-        <span style="font-size:0.7rem; color:var(--alexa-cyan)">POST /mcp</span>
-      </div>
-      <div id="raw">Connected to DueSignal MCP stream.</div>
+    <div class="kpi-card">
+      <span class="kpi-title">Completion Rate</span>
+      <span id="kpiRate" class="kpi-value" style="color:var(--success)">—%</span>
+      <span id="kpiCompletedNote" class="kpi-note">0 of 0 completed</span>
     </div>
+    <div class="kpi-card">
+      <span class="kpi-title">AI Explanations</span>
+      <span id="kpiBedrock" class="kpi-value" style="font-size:1.15rem">Checking…</span>
+      <span id="kpiBedrockNote" class="kpi-note">Deterministic engine active</span>
+    </div>
+  </section>
 
-    <!-- Active Deadlines Column -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">📚 Active Academic Deadlines</span>
-        <div style="display:flex; gap:0.5rem; align-items:center">
-          <span id="deadlineCount" style="font-size:0.75rem; color:var(--alexa-cyan); font-weight:600">0 tasks</span>
-          <button class="chip" onclick="refreshDeadlines()" style="margin:0">🔄 Refresh</button>
+  <!-- Main Workspace -->
+  <main class="workspace">
+    <!-- Deadline Inventory Panel -->
+    <section class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span>Deadlines Inventory</span>
+          <span id="inventoryCount" style="font-size:0.75rem; color:var(--text-muted); font-weight:normal">(0 records)</span>
+        </div>
+        <div style="display:flex; gap:0.5rem">
+          <button class="btn btn-primary btn-sm" onclick="openAddModal()">+ Add Deadline</button>
+          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('icsInput').click()">Import .ics</button>
+          <input type="file" id="icsInput" accept=".ics,text/calendar" style="display:none" onchange="handleIcsImport(event)">
         </div>
       </div>
-      <div id="deadlinesList" class="deadline-list">
-        <div style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:2rem 0">
-          Loading deadlines...
+
+      <!-- Filters & Sorting Controls -->
+      <div class="filter-row">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by title or course…" oninput="applyFilters()" />
+        
+        <select id="statusFilter" class="control-select" onchange="applyFilters()">
+          <option value="pending">Pending Only</option>
+          <option value="completed">Completed Only</option>
+          <option value="all">All Statuses</option>
+        </select>
+
+        <select id="sortSelect" class="control-select" onchange="applyFilters()">
+          <option value="priority">Sort: Urgency Priority</option>
+          <option value="due">Sort: Due Date</option>
+          <option value="weight">Sort: Grade Weight</option>
+        </select>
+      </div>
+
+      <!-- Task Cards List -->
+      <div id="taskList" class="task-list">
+        <div style="text-align:center; padding:3rem 0; color:var(--text-muted); font-size:0.85rem">
+          Loading deadlines from SQLite…
         </div>
       </div>
-    </div>
-  </div>
+    </section>
+
+    <!-- Alexa+ Dialogue & Activity Panel -->
+    <section class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span>Alexa+ Dialogue Simulation</span>
+        </div>
+        <span id="dialogueStatus" style="font-size:0.75rem; color:var(--text-muted)">Ready</span>
+      </div>
+
+      <!-- Chat Stream -->
+      <div id="chatBox" class="chat-box"></div>
+
+      <!-- Dialogue Input -->
+      <div class="input-row">
+        <input type="text" id="chatInput" placeholder="Try: 'What should I do today?' or 'Add CS301 exam tomorrow 25%'" />
+        <button id="micBtn" class="btn btn-secondary" title="Speech input">🎙️</button>
+        <button id="chatSendBtn" class="btn btn-primary">Send</button>
+      </div>
+
+      <!-- Quick prompts -->
+      <div style="display:flex; gap:0.4rem; overflow-x:auto; padding-bottom:0.2rem">
+        <button class="btn btn-secondary btn-sm" onclick="triggerDialogue('What should I do today?')">⚡ What should I do today?</button>
+        <button class="btn btn-secondary btn-sm" onclick="triggerDialogue('List pending deadlines')">📋 List deadlines</button>
+      </div>
+
+      <!-- Technical Protocol Inspector (Collapsible) -->
+      <details class="inspector">
+        <summary>Technical Protocol Trace (Streamable HTTP)</summary>
+        <pre id="protocolViewer" class="json-viewer">Awaiting tool invocation…</pre>
+      </details>
+    </section>
+  </main>
 </div>
 
-<!-- Add Deadline Modal -->
-<div id="addModal" class="modal-overlay">
+<!-- Add / Edit Deadline Modal -->
+<div id="deadlineModal" class="modal-overlay">
   <div class="modal">
     <div style="display:flex; justify-content:space-between; align-items:center">
-      <h3 style="color:#fff; font-size:1.05rem">Add New Academic Deadline</h3>
-      <button onclick="closeAddModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.2rem">&times;</button>
+      <h3 id="modalHeading" style="color:#fff; font-size:1.05rem">Add Deadline</h3>
+      <button onclick="closeDeadlineModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.2rem">&times;</button>
     </div>
+
+    <input type="hidden" id="editId" value="" />
 
     <div class="form-group">
       <label>Course Code</label>
-      <input type="text" id="mCourse" placeholder="e.g. CS 301, MATH 201" value="CS 301" />
+      <input type="text" id="formCourse" placeholder="e.g. CS 301, MATH 201" />
     </div>
 
     <div class="form-group">
       <label>Assignment / Exam Title</label>
-      <input type="text" id="mTitle" placeholder="e.g. Operating Systems Lab 3" />
+      <input type="text" id="formTitle" placeholder="e.g. Operating Systems Lab 3" />
     </div>
 
     <div class="form-group">
-      <label>Due Date & Time</label>
-      <input type="datetime-local" id="mDueDate" />
+      <label>Due Date & Time (Local)</label>
+      <input type="datetime-local" id="formDue" />
     </div>
 
     <div class="form-group">
-      <label>Grade Weight: <span id="weightVal" style="color:var(--alexa-cyan)">20%</span></label>
-      <input type="range" id="mWeight" min="0" max="60" value="20" oninput="document.getElementById('weightVal').textContent = this.value + '%'" />
+      <label>Grade Weight (% of Final Grade): <span id="weightDisplay" style="color:var(--accent)">15%</span></label>
+      <input type="range" id="formWeight" min="0" max="60" value="15" oninput="document.getElementById('weightDisplay').textContent = this.value + '%'" />
     </div>
+
+    <div id="formError" style="display:none; color:var(--danger); font-size:0.78rem"></div>
 
     <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.5rem">
-      <button class="btn-secondary" onclick="closeAddModal()">Cancel</button>
-      <button class="btn-primary" onclick="submitNewDeadline()">Save via MCP</button>
+      <button class="btn btn-secondary" onclick="closeDeadlineModal()">Cancel</button>
+      <button id="saveBtn" class="btn btn-primary" onclick="submitDeadlineForm()">Save Deadline</button>
     </div>
   </div>
 </div>
@@ -772,14 +745,17 @@
 <!-- Token Modal -->
 <div id="tokenModal" class="modal-overlay">
   <div class="modal">
-    <h3 style="color:#fff; margin-bottom:0.5rem">Configure MCP Bearer Token</h3>
-    <p style="font-size:0.82rem; color:var(--text-muted)">
-      Saved to browser storage and attached to all <code>POST /mcp</code> headers.
+    <h3 style="color:#fff; font-size:1.05rem">MCP Authentication Token</h3>
+    <p style="font-size:0.8rem; color:var(--text-secondary)">
+      Stored locally in your browser and transmitted as <code>Authorization: Bearer &lt;token&gt;</code> to protect MCP tools.
     </p>
-    <input id="tokenInput" type="text" style="width:100%; padding:0.65rem; border-radius:8px; border:1px solid #334155; background:#020617; color:#fff; font-family:'JetBrains Mono', monospace; font-size:0.8rem;" />
+    <div class="form-group">
+      <label>Bearer Token</label>
+      <input type="text" id="tokenField" style="font-family:'JetBrains Mono', monospace; font-size:0.8rem" />
+    </div>
     <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.5rem">
-      <button class="btn-secondary" onclick="closeTokenModal()">Cancel</button>
-      <button id="saveTokenBtn" class="btn-primary">Save Token</button>
+      <button class="btn btn-secondary" onclick="closeTokenModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveToken()">Save & Reconnect</button>
     </div>
   </div>
 </div>
@@ -788,137 +764,338 @@
 const DEFAULT_TOKEN = "QiLwfdv5r2zB3zXB4iiLpXJF-MNGsAEc1hcfgjRTEcY";
 const MCP_URL = `${window.location.origin}/mcp`;
 
-// Auth Token
-let TOKEN = new URLSearchParams(window.location.search).get("token") ||
-            localStorage.getItem("MCP_AUTH_TOKEN") ||
-            DEFAULT_TOKEN;
+let TOKEN = localStorage.getItem("MCP_AUTH_TOKEN") || DEFAULT_TOKEN;
 localStorage.setItem("MCP_AUTH_TOKEN", TOKEN);
 
-const chat = document.getElementById("chat");
-const raw = document.getElementById("raw");
-const input = document.getElementById("input");
-const sendBtn = document.getElementById("send");
-const micBtn = document.getElementById("micBtn");
-const orb = document.getElementById("alexaOrb");
-const ttsToggle = document.getElementById("ttsToggle");
-const earconToggle = document.getElementById("earconToggle");
-const deadlinesList = document.getElementById("deadlinesList");
-let reqId = 1;
-let ttsEnabled = true;
-let earconEnabled = true;
-let audioCtx = null;
-let currentFilter = 'all';
-let allDeadlinesCache = [];
+let ttsActive = true;
+let reqCounter = 1;
+let currentDeadlines = [];
 
-// Audio Context
-function getAudioContext() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  return audioCtx;
+// Audio & Speech
+const ttsBtn = document.getElementById("ttsToggle");
+ttsBtn.onclick = () => {
+  ttsActive = !ttsActive;
+  ttsBtn.textContent = ttsActive ? "🔊 Voice On" : "🔇 Voice Off";
+  ttsBtn.classList.toggle("btn-secondary", ttsActive);
+};
+
+function speakText(text) {
+  if (!ttsActive || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const clean = text.replace(/[*#_`]/g, '').replace(/http\S+/g, '');
+  const u = new SpeechSynthesisUtterance(clean);
+  u.rate = 1.05;
+  window.speechSynthesis.speak(u);
 }
 
-// Alexa Audio Earcon Chimes
-function playAlexaChime(type = "listen") {
-  if (!earconEnabled) return;
+// Token Modal
+function openTokenModal() {
+  document.getElementById("tokenField").value = TOKEN;
+  document.getElementById("tokenModal").classList.add("open");
+}
+function closeTokenModal() {
+  document.getElementById("tokenModal").classList.remove("open");
+}
+function saveToken() {
+  TOKEN = document.getElementById("tokenField").value.trim() || DEFAULT_TOKEN;
+  localStorage.setItem("MCP_AUTH_TOKEN", TOKEN);
+  closeTokenModal();
+  refreshAll();
+}
+
+// MCP JSON-RPC 2.0 Client Dispatcher
+async function invokeMcpTool(name, args) {
+  const payload = {
+    jsonrpc: "2.0",
+    id: reqCounter++,
+    method: "tools/call",
+    params: { name, arguments: args }
+  };
+
+  const viewer = document.getElementById("protocolViewer");
+  viewer.textContent = `→ REQUEST (POST /mcp):\n` + JSON.stringify(payload, null, 2);
+
+  const res = await fetch(MCP_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json, text/event-stream",
+      "Authorization": `Bearer ${TOKEN}`,
+      "MCP-Protocol-Version": "2025-11-25"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const rawText = await res.text();
+  viewer.textContent += `\n\n← RESPONSE (HTTP ${res.status}):\n` + rawText;
+
+  if (!res.ok) {
+    throw new Error(`Server returned HTTP ${res.status}: ${rawText}`);
+  }
+
+  // Parse SSE or JSON
+  const lines = rawText.split("\n").filter(l => l.trim().length > 0);
+  const dataLine = lines.find(l => l.startsWith("data:"));
+  const candidate = dataLine ? dataLine.replace(/^data:\s*/, "") : rawText;
+
   try {
-    const ctx = getAudioContext();
-    const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = "sine";
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    if (type === "listen") {
-      osc.frequency.setValueAtTime(660, now);
-      osc.frequency.exponentialRampToValueAtTime(880, now + 0.12);
-      gain.gain.setValueAtTime(0.01, now);
-      gain.gain.linearRampToValueAtTime(0.2, now + 0.04);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-      osc.start(now);
-      osc.stop(now + 0.35);
-    } else {
-      osc.frequency.setValueAtTime(880, now);
-      osc.frequency.exponentialRampToValueAtTime(660, now + 0.14);
-      gain.gain.setValueAtTime(0.01, now);
-      gain.gain.linearRampToValueAtTime(0.18, now + 0.04);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
-      osc.start(now);
-      osc.stop(now + 0.38);
-    }
-  } catch (e) {
-    console.warn("Audio chime unavailable:", e);
+    return JSON.parse(candidate);
+  } catch {
+    return { raw: rawText };
   }
 }
 
-ttsToggle.onclick = () => {
-  ttsEnabled = !ttsEnabled;
-  ttsToggle.classList.toggle("active", ttsEnabled);
-  ttsToggle.textContent = ttsEnabled ? "🔊" : "🔇";
-};
-
-earconToggle.onclick = () => {
-  earconEnabled = !earconEnabled;
-  earconToggle.classList.toggle("active", earconEnabled);
-};
-
-// Token Modal
-const tokenModal = document.getElementById("tokenModal");
-const tokenInput = document.getElementById("tokenInput");
-document.getElementById("tokenConfigBtn").onclick = () => {
-  tokenInput.value = TOKEN;
-  tokenModal.classList.add("open");
-};
-function closeTokenModal() { tokenModal.classList.remove("open"); }
-document.getElementById("saveTokenBtn").onclick = () => {
-  TOKEN = tokenInput.value.trim() || DEFAULT_TOKEN;
-  localStorage.setItem("MCP_AUTH_TOKEN", TOKEN);
-  closeTokenModal();
-  addMsg("MCP Authorization Token updated.", "bot");
-  refreshDeadlines();
-};
-
-// Add Deadline Modal
-const addModal = document.getElementById("addModal");
-function openAddModal() {
-  const tomorrow = new Date(Date.now() + 86400000);
-  document.getElementById("mDueDate").value = tomorrow.toISOString().slice(0, 16);
-  addModal.classList.add("open");
-  document.getElementById("mTitle").focus();
+// Data Refresh & Health Polling
+async function refreshAll() {
+  await Promise.all([refreshSummary(), applyFilters()]);
 }
-function closeAddModal() { addModal.classList.remove("open"); }
 
-async function submitNewDeadline() {
-  const course = document.getElementById("mCourse").value.trim() || "Course";
-  const title = document.getElementById("mTitle").value.trim();
-  const due = document.getElementById("mDueDate").value;
-  const weight = parseFloat(document.getElementById("mWeight").value) || 0;
+async function refreshSummary() {
+  try {
+    const res = await fetch("/api/summary");
+    if (!res.ok) throw new Error("Health check failed");
+    const data = await res.json();
 
-  if (!title || !due) {
-    alert("Please enter both an assignment title and due date.");
+    document.getElementById("healthDot").className = "health-dot";
+    document.getElementById("healthText").textContent = "Operational";
+
+    document.getElementById("kpiPending").textContent = data.pending;
+    document.getElementById("kpiCritical").textContent = data.critical_count + data.overdue_count;
+    document.getElementById("kpiOverdueNote").textContent = `${data.overdue_count} overdue · ${data.critical_count} critical (<24h)`;
+    document.getElementById("kpiRate").textContent = `${data.completion_rate_pct}%`;
+    document.getElementById("kpiCompletedNote").textContent = `${data.completed} of ${data.total} completed`;
+
+    const bedrockEl = document.getElementById("kpiBedrock");
+    const bedrockNote = document.getElementById("kpiBedrockNote");
+    if (data.bedrock_configured) {
+      bedrockEl.textContent = "Amazon Bedrock";
+      bedrockEl.style.color = "#a855f7";
+      bedrockNote.textContent = "Nova / Claude available";
+    } else {
+      bedrockEl.textContent = "Deterministic";
+      bedrockEl.style.color = "var(--text-primary)";
+      bedrockNote.textContent = "Deterministic fallback active";
+    }
+  } catch (err) {
+    document.getElementById("healthDot").className = "health-dot offline";
+    document.getElementById("healthText").textContent = "Offline / Error";
+  }
+}
+
+async function applyFilters() {
+  const status = document.getElementById("statusFilter").value;
+  const search = document.getElementById("searchInput").value.trim();
+  const sort = document.getElementById("sortSelect").value;
+
+  const params = new URLSearchParams({ status, sort_by: sort });
+  if (search) params.append("search", search);
+
+  try {
+    const res = await fetch(`/api/deadlines?${params.toString()}`);
+    const data = await res.json();
+    currentDeadlines = data.deadlines || [];
+    renderTaskList(currentDeadlines);
+  } catch (err) {
+    document.getElementById("taskList").innerHTML = `
+      <div style="color:var(--danger); font-size:0.85rem; padding:1.5rem; text-align:center">
+        Failed to fetch deadlines: ${err.message}
+      </div>
+    `;
+  }
+}
+
+function renderTaskList(list) {
+  const container = document.getElementById("taskList");
+  document.getElementById("inventoryCount").textContent = `(${list.length} records)`;
+
+  if (!list.length) {
+    container.innerHTML = `
+      <div style="text-align:center; padding:3rem 1rem; color:var(--text-muted); font-size:0.85rem">
+        No deadlines match your current filter.<br>
+        <span style="font-size:0.78rem">Click <strong>+ Add Deadline</strong> or import a calendar to get started.</span>
+      </div>
+    `;
     return;
   }
 
-  closeAddModal();
-  addMsg(`Adding ${title} (${course})...`, "user");
+  container.innerHTML = list.map(d => {
+    const isCompleted = d.status === "completed";
+    let cardClass = "task-card";
+    if (isCompleted) cardClass += " completed";
+    else if (d.is_overdue) cardClass += " overdue";
+    else if (d.urgency_band === "CRITICAL") cardClass += " critical";
+
+    const band = d.urgency_band || (isCompleted ? "DONE" : "UPCOMING");
+    const tagClass = `tag tag-${band.toLowerCase()}`;
+    const sourceClass = `source-pill ${d.explanation_source === 'bedrock' ? 'bedrock' : ''}`;
+
+    return `
+      <article class="${cardClass}">
+        <div class="task-top">
+          <div>
+            <span class="task-title">${escapeHtml(d.title)}</span>
+          </div>
+          <div class="task-badges">
+            <span class="tag tag-course">${escapeHtml(d.course)}</span>
+            <span class="${tagClass}">${band}</span>
+          </div>
+        </div>
+
+        <div class="task-meta">
+          <span>Due: <strong>${d.due_at.replace('T', ' ')}</strong> (${formatHours(d.hours_remaining, isCompleted)})</span>
+          <span>Weight: <strong>${d.weight_pct}%</strong> · Score: <strong>${d.score || 0}</strong></span>
+        </div>
+
+        <div class="task-reason">
+          <span>${escapeHtml(d.explanation || d.deterministic_reason || "Scheduled")}</span>
+          <span class="${sourceClass}">${d.explanation_source === 'bedrock' ? '⚡ Bedrock' : '⚙ Deterministic'}</span>
+        </div>
+
+        <div class="task-actions" style="justify-content:flex-end">
+          ${isCompleted 
+            ? `<button class="btn btn-secondary btn-sm" onclick="reopenItem(${d.id})">↺ Reopen</button>`
+            : `<button class="btn btn-secondary btn-sm" onclick="completeItem(${d.id})">✓ Mark Done</button>`
+          }
+          <button class="btn btn-secondary btn-sm" onclick="openEditModal(${d.id})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteItem(${d.id})">Delete</button>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function formatHours(h, isCompleted) {
+  if (isCompleted) return "Completed";
+  if (h === undefined || h === null) return "Pending";
+  if (h < 0) return `${Math.abs(h).toFixed(1)}h overdue`;
+  if (h < 24) return `${h.toFixed(1)}h left`;
+  const days = Math.floor(h / 24);
+  return `${days}d ${Math.round(h % 24)}h left`;
+}
+
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str).replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[s]));
+}
+
+// Task Lifecycle Operations
+async function completeItem(id) {
   try {
-    await callTool("tool_add_deadline", {
-      title: title,
-      course: course,
-      due_at: due,
-      weight_pct: weight
-    });
-    addMsg(`Successfully saved: ${title} (${course}) due ${due} (weight: ${weight}%).`, "bot");
-    speak(`I've added ${title} for ${course} to your schedule.`);
-    refreshDeadlines();
+    const res = await fetch(`/api/deadlines/${id}/complete`, { method: "POST" });
+    if (!res.ok) throw new Error("Failed to mark deadline complete");
+    addDialogueMsg(`Marked deadline #${id} completed.`, "bot");
+    speakText(`Marked deadline #${id} complete.`);
+    refreshAll();
   } catch (err) {
-    addMsg("Error adding deadline: " + err.message, "err");
+    alert("Error: " + err.message);
   }
 }
 
-// iCalendar (.ics) File Parser & Importer
-function handleIcsUpload(e) {
+async function reopenItem(id) {
+  try {
+    const res = await fetch(`/api/deadlines/${id}/reopen`, { method: "POST" });
+    if (!res.ok) throw new Error("Failed to reopen deadline");
+    addDialogueMsg(`Reopened deadline #${id}.`, "bot");
+    refreshAll();
+  } catch (err) {
+    alert("Error: " + err.message);
+  }
+}
+
+async function deleteItem(id) {
+  if (!confirm(`Are you sure you want to permanently delete deadline #${id}?`)) return;
+  try {
+    const res = await fetch(`/api/deadlines/${id}`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Failed to delete deadline");
+    addDialogueMsg(`Deleted deadline #${id}.`, "bot");
+    refreshAll();
+  } catch (err) {
+    alert("Error: " + err.message);
+  }
+}
+
+// Add & Edit Form Handlers
+function openAddModal() {
+  document.getElementById("modalHeading").textContent = "Add Academic Deadline";
+  document.getElementById("editId").value = "";
+  document.getElementById("formCourse").value = "CS 301";
+  document.getElementById("formTitle").value = "";
+  const tomorrow = new Date(Date.now() + 86400000);
+  document.getElementById("formDue").value = tomorrow.toISOString().slice(0, 16);
+  document.getElementById("formWeight").value = "20";
+  document.getElementById("weightDisplay").textContent = "20%";
+  document.getElementById("formError").style.display = "none";
+  document.getElementById("deadlineModal").classList.add("open");
+  document.getElementById("formTitle").focus();
+}
+
+function openEditModal(id) {
+  const d = currentDeadlines.find(x => x.id === id);
+  if (!d) return;
+
+  document.getElementById("modalHeading").textContent = `Edit Deadline #${id}`;
+  document.getElementById("editId").value = id;
+  document.getElementById("formCourse").value = d.course;
+  document.getElementById("formTitle").value = d.title;
+  document.getElementById("formDue").value = d.due_at.slice(0, 16);
+  document.getElementById("formWeight").value = d.weight_pct;
+  document.getElementById("weightDisplay").textContent = `${d.weight_pct}%`;
+  document.getElementById("formError").style.display = "none";
+  document.getElementById("deadlineModal").classList.add("open");
+}
+
+function closeDeadlineModal() {
+  document.getElementById("deadlineModal").classList.remove("open");
+}
+
+async function submitDeadlineForm() {
+  const id = document.getElementById("editId").value;
+  const course = document.getElementById("formCourse").value.trim();
+  const title = document.getElementById("formTitle").value.trim();
+  const due = document.getElementById("formDue").value;
+  const weight = parseFloat(document.getElementById("formWeight").value) || 0;
+  const errEl = document.getElementById("formError");
+
+  if (!course || !title || !due) {
+    errEl.textContent = "Course code, title, and due date are required.";
+    errEl.style.display = "block";
+    return;
+  }
+
+  const saveBtn = document.getElementById("saveBtn");
+  saveBtn.disabled = true;
+
+  try {
+    if (id) {
+      // Edit PUT
+      const res = await fetch(`/api/deadlines/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, course, due_at: due, weight_pct: weight })
+      });
+      if (!res.ok) throw new Error("Update failed");
+      addDialogueMsg(`Updated ${title} (${course}).`, "bot");
+    } else {
+      // Add via MCP tool invocation for full protocol verification
+      await invokeMcpTool("tool_add_deadline", {
+        title, course, due_at: due, weight_pct: weight
+      });
+      addDialogueMsg(`Added: "${title}" (${course}) due ${due.replace('T', ' ')} (Weight: ${weight}%).`, "bot");
+      speakText(`Added ${title} for ${course} to your schedule.`);
+    }
+
+    closeDeadlineModal();
+    refreshAll();
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.style.display = "block";
+  } finally {
+    saveBtn.disabled = false;
+  }
+}
+
+// iCalendar (.ics) RFC 5545 Parser
+function handleIcsImport(e) {
   const file = e.target.files[0];
   if (!file) return;
 
@@ -926,30 +1103,31 @@ function handleIcsUpload(e) {
   reader.onload = async (event) => {
     const text = event.target.result;
     const events = parseIcsString(text);
+
     if (!events.length) {
-      alert("No valid VEVENT entries found in this calendar file.");
+      alert("No valid VEVENT calendar records found in this file.");
       return;
     }
 
-    if (confirm(`Found ${events.length} deadlines in "${file.name}". Import all into DueSignal?`)) {
-      addMsg(`Importing ${events.length} deadlines from "${file.name}"...`, "user");
-      let added = 0;
+    if (confirm(`Detected ${events.length} assignments in "${file.name}". Import all into DueSignal via MCP?`)) {
+      addDialogueMsg(`Importing ${events.length} calendar events from "${file.name}"…`, "user");
+      let count = 0;
       for (const ev of events) {
         try {
-          await callTool("tool_add_deadline", {
+          await invokeMcpTool("tool_add_deadline", {
             title: ev.title,
             course: ev.course,
             due_at: ev.due_at,
             weight_pct: ev.weight_pct
           });
-          added++;
+          count++;
         } catch (err) {
-          console.warn("Failed to add event:", ev, err);
+          console.warn("Event import skipped:", ev, err);
         }
       }
-      addMsg(`Imported ${added} assignments into DueSignal from your calendar!`, "bot");
-      speak(`Imported ${added} assignments into DueSignal.`);
-      refreshDeadlines();
+      addDialogueMsg(`Successfully imported ${count} deadlines from your calendar!`, "bot");
+      speakText(`Imported ${count} assignments into DueSignal.`);
+      refreshAll();
     }
   };
   reader.readAsText(file);
@@ -959,31 +1137,29 @@ function parseIcsString(icsData) {
   const lines = icsData.split(/\r\n|\n|\r/);
   const events = [];
   let inEvent = false;
-  let curEvent = {};
+  let cur = {};
 
   for (let line of lines) {
     if (line.startsWith("BEGIN:VEVENT")) {
       inEvent = true;
-      curEvent = {};
+      cur = {};
     } else if (line.startsWith("END:VEVENT")) {
-      if (curEvent.title && curEvent.due_at) {
-        events.push(curEvent);
-      }
+      if (cur.title && cur.due_at) events.push(cur);
       inEvent = false;
     } else if (inEvent) {
       if (line.startsWith("SUMMARY:")) {
         const full = line.replace("SUMMARY:", "").trim();
-        const courseMatch = full.match(/^([A-Z]{2,4}\s*\d{3}[A-Z]?)\s*[:-]\s*(.+)$/i);
-        if (courseMatch) {
-          curEvent.course = courseMatch[1].toUpperCase();
-          curEvent.title = courseMatch[2];
+        const m = full.match(/^([A-Z]{2,4}\s*\d{3}[A-Z]?)\s*[:-]\s*(.+)$/i);
+        if (m) {
+          cur.course = m[1].toUpperCase();
+          cur.title = m[2];
         } else {
-          curEvent.course = "Course";
-          curEvent.title = full;
+          cur.course = "Course";
+          cur.title = full;
         }
-        curEvent.weight_pct = 15;
+        cur.weight_pct = 15;
       } else if (line.startsWith("DTEND") || line.startsWith("DTSTART")) {
-        if (!curEvent.due_at) {
+        if (!cur.due_at) {
           const val = line.split(":")[1];
           if (val && val.length >= 8) {
             const yr = val.slice(0, 4);
@@ -991,7 +1167,7 @@ function parseIcsString(icsData) {
             const da = val.slice(6, 8);
             const hr = val.length >= 13 ? val.slice(9, 11) : "23";
             const mn = val.length >= 13 ? val.slice(11, 13) : "59";
-            curEvent.due_at = `${yr}-${mo}-${da}T${hr}:${mn}`;
+            cur.due_at = `${yr}-${mo}-${da}T${hr}:${mn}`;
           }
         }
       }
@@ -1000,309 +1176,152 @@ function parseIcsString(icsData) {
   return events;
 }
 
-async function clearAllData() {
-  if (!confirm("Are you sure you want to clear all deadlines?")) return;
-  try {
-    const res = await fetch("/api/demo/seed", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ scenario: "clear" })
-    });
-    addMsg("All deadlines cleared from database.", "bot");
-    speak("All deadlines have been cleared.");
-    refreshDeadlines();
-  } catch (err) {
-    addMsg("Error clearing: " + err.message, "err");
-  }
-}
+// Alexa+ Dialogue Simulator
+const chatBox = document.getElementById("chatBox");
+const chatInput = document.getElementById("chatInput");
+const sendBtn = document.getElementById("chatSendBtn");
 
-function speak(text) {
-  if (!ttsEnabled || !window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const clean = text.replace(/[*#_`]/g, '').replace(/http\S+/g, '');
-  const utterance = new SpeechSynthesisUtterance(clean);
-  utterance.rate = 1.05;
-  orb.classList.add("speaking");
-  utterance.onend = () => {
-    orb.classList.remove("speaking");
-    playAlexaChime("complete");
-  };
-  utterance.onerror = () => orb.classList.remove("speaking");
-  window.speechSynthesis.speak(utterance);
-}
-
-function addMsg(text, cls) {
+function addDialogueMsg(text, type) {
   const d = document.createElement("div");
-  d.className = "msg " + cls;
+  d.className = `chat-msg ${type}`;
   d.textContent = text;
-  chat.appendChild(d);
-  chat.scrollTop = chat.scrollHeight;
+  chatBox.appendChild(d);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-function parseMcpResponse(text) {
-  const lines = text.split("\n").filter(l => l.trim().length > 0);
-  const dataLine = lines.find(l => l.startsWith("data:"));
-  const candidate = dataLine ? dataLine.replace(/^data:\s*/, "") : text;
-  try { return JSON.parse(candidate); } catch { return { raw: text }; }
-}
-
-async function callTool(name, args) {
-  const start = performance.now();
-  const body = { jsonrpc: "2.0", id: reqId++, method: "tools/call", params: { name, arguments: args } };
-  raw.textContent = "→ " + JSON.stringify(body, null, 2);
-
-  const res = await fetch(MCP_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json, text/event-stream",
-      "Authorization": "Bearer " + TOKEN,
-      "MCP-Protocol-Version": "2025-11-25"
-    },
-    body: JSON.stringify(body)
-  });
-
-  const duration = Math.round(performance.now() - start);
-  const text = await res.text();
-  raw.textContent += "\n← HTTP " + res.status + " (" + duration + "ms)\n" + text;
-
-  if (!res.ok) throw new Error("HTTP " + res.status + ": " + text);
-  return parseMcpResponse(text);
-}
-
-function setFilter(type, btn) {
-  currentFilter = type;
-  document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
-  btn.classList.add("active");
-  renderDeadlines();
-}
-
-function renderDeadlines() {
-  let list = [...allDeadlinesCache];
-  if (currentFilter === 'week') {
-    list = list.filter(d => !d.is_overdue && d.hours_remaining <= 168);
-  } else if (currentFilter === 'urgent') {
-    list = list.filter(d => d.is_overdue || d.urgency_band === "CRITICAL" || d.urgency_band === "HIGH");
-  }
-
-  document.getElementById("deadlineCount").textContent = `${list.length} task${list.length === 1 ? '' : 's'}`;
-
-  if (!list.length) {
-    deadlinesList.innerHTML = `<div style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:2rem 0">No deadlines match current view.<br><small style="color:var(--alexa-cyan)">Click "+ Add Deadline" or import an .ics file above!</small></div>`;
-    return;
-  }
-
-  deadlinesList.innerHTML = list.map(d => {
-    const isOverdue = d.is_overdue || (d.urgency_band === "OVERDUE");
-    const cardCls = isOverdue ? "deadline-card overdue" : (d.urgency_band === "CRITICAL" ? "deadline-card critical" : "deadline-card");
-    const band = d.urgency_band || "UPCOMING";
-
-    return `
-      <div class="${cardCls}">
-        <div class="deadline-top">
-          <span class="deadline-title">${d.title}</span>
-          <div style="display:flex; gap:0.4rem; align-items:center">
-            <span class="urgency-pill ${band}">${band}</span>
-            <span class="course-badge">${d.course}</span>
-          </div>
-        </div>
-        <div class="deadline-meta">
-          <span>📅 ${d.due_at} · ⚖️ ${d.weight_pct}% · Score: ${d.score}</span>
-          <button class="btn-complete" onclick="markDone(${d.id})">✓ Done</button>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-async function refreshDeadlines() {
-  try {
-    const res = await fetch("/api/deadlines");
-    const data = await res.json();
-    allDeadlinesCache = data.deadlines || [];
-    renderDeadlines();
-  } catch (err) {
-    deadlinesList.innerHTML = `<div style="font-size:0.82rem; color:var(--danger); padding:1rem">Could not load deadlines: ${err.message}</div>`;
-  }
-}
-
-async function markDone(id) {
-  try {
-    addMsg(`Marking deadline #${id} complete...`, "user");
-    await callTool("tool_mark_complete", { id: parseInt(id) });
-    addMsg(`Completed deadline #${id}. Great job!`, "bot");
-    speak(`Completed deadline number ${id}. Great job!`);
-    refreshDeadlines();
-  } catch (err) {
-    addMsg(`Error: ${err.message}`, "err");
-  }
-}
-
-// Conversational Intent Dispatcher
-async function handle(userText) {
-  addMsg(userText, "user");
-  sendBtn.disabled = true;
-  orb.classList.add("speaking");
-
-  try {
-    const lower = userText.toLowerCase();
-
-    // 1. ADD DEADLINE INTENT
-    if (lower.includes("add") && (lower.includes("due") || lower.includes("deadline") || lower.includes("project") || lower.includes("exam"))) {
-      let title = "Assignment";
-      let dueAt = new Date(Date.now() + 86400000 * 2).toISOString().slice(0, 16);
-      let weight = 15;
-
-      const titleMatch = userText.match(/add\s+(.+?)(?:\s+due|\s+worth|\s+for|$)/i);
-      if (titleMatch) title = titleMatch[1].trim();
-
-      const dueMatch = userText.match(/due\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/i);
-      if (dueMatch) {
-        dueAt = dueMatch[1];
-      } else if (lower.includes("tomorrow")) {
-        const tomorrow = new Date(Date.now() + 86400000);
-        dueAt = tomorrow.toISOString().slice(0, 10) + "T23:59";
-      }
-
-      const weightMatch = userText.match(/worth\s+(\d+)/i) || userText.match(/(\d+)%/);
-      if (weightMatch) weight = parseFloat(weightMatch[1]);
-
-      await callTool("tool_add_deadline", {
-        title: title,
-        course: "CS",
-        due_at: dueAt,
-        weight_pct: weight
-      });
-
-      addMsg(`Added "${title}" due ${dueAt} (weight: ${weight}%).`, "bot");
-      speak(`I've added ${title} due on ${dueAt}.`);
-      refreshDeadlines();
-    }
-    // 2. LIST DEADLINES INTENT
-    else if (lower.includes("list") || lower.includes("show") || lower.includes("what is due")) {
-      const r = await callTool("tool_list_deadlines", { window_days: 14 });
-      let inner = r.result ? (typeof r.result === "string" ? JSON.parse(r.result) : r.result) : r;
-      if (inner && inner.content && inner.content[0] && typeof inner.content[0].text === "string") {
-        try { inner = JSON.parse(inner.content[0].text); } catch {}
-      }
-      const deadlines = inner.deadlines || [];
-      if (!deadlines.length) {
-        addMsg("You have no pending deadlines in the next 14 days.", "bot");
-        speak("You have no pending deadlines in the next 14 days.");
-      } else {
-        const lines = deadlines.map((d, i) => `${i + 1}. ${d.title} (${d.course}) — due ${d.due_at} (Weight: ${d.weight_pct}%)`);
-        addMsg("Upcoming deadlines:\n\n" + lines.join("\n"), "bot");
-        speak(`You have ${deadlines.length} upcoming deadlines. First is ${deadlines[0].title}.`);
-      }
-      refreshDeadlines();
-    }
-    // 3. MARK COMPLETE INTENT
-    else if (lower.includes("complete") || lower.includes("done") || lower.includes("finished")) {
-      const idMatch = userText.match(/\b(\d+)\b/);
-      if (!idMatch) {
-        addMsg("Please specify the deadline ID to complete (e.g., 'Mark 1 complete').", "err");
-        return;
-      }
-      await markDone(idMatch[1]);
-    }
-    // 4. PRIORITY RANKING (Default / Alexa Triage)
-    else {
-      const r = await callTool("tool_get_priority_ranking", {});
-      let inner = r.result ? (typeof r.result === "string" ? JSON.parse(r.result) : r.result) : r;
-      if (inner && inner.content && inner.content[0] && typeof inner.content[0].text === "string") {
-        try { inner = JSON.parse(inner.content[0].text); } catch {}
-      }
-      const ranked = inner.ranked || [];
-      if (!ranked.length) {
-        const emptyMsg = "You currently have no pending deadlines. Click '+ Add Deadline' above to get started!";
-        addMsg(emptyMsg, "bot");
-        speak(emptyMsg);
-      } else {
-        const topItem = ranked[0];
-        const lines = ranked.map((d, i) => {
-          const reason = d.bedrock_reason || d.deterministic_reason || "Scheduled.";
-          const tag = d.is_overdue ? " [OVERDUE]" : "";
-          return `${i + 1}. ${d.title} (${d.course})${tag}\n   👉 ${reason}`;
-        });
-
-        addMsg("🏆 Prioritized Deadline Ranking:\n\n" + lines.join("\n\n"), "bot triage-card");
-
-        const topReason = topItem.bedrock_reason || topItem.deterministic_reason;
-        const spokenMsg = topItem.is_overdue
-          ? `Alert: Your ${topItem.title} is overdue! You should address it immediately.`
-          : `Based on urgency and grade weight, you should focus on ${topItem.title} first. ${topReason}`;
-        speak(spokenMsg);
-      }
-      refreshDeadlines();
-    }
-  } catch (e) {
-    addMsg("Error: " + e.message, "err");
-    speak("Sorry, I encountered an error communicating with DueSignal.");
-  } finally {
-    sendBtn.disabled = false;
-    orb.classList.remove("speaking");
-    input.focus();
-  }
-}
-
-function quickSend(text) {
-  input.value = text;
+async function triggerDialogue(prompt) {
+  chatInput.value = prompt;
   sendBtn.click();
 }
 
-sendBtn.onclick = () => {
-  const v = input.value.trim();
-  if (v) {
-    input.value = "";
-    handle(v);
+sendBtn.onclick = async () => {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  chatInput.value = "";
+  addDialogueMsg(text, "user");
+  sendBtn.disabled = true;
+
+  try {
+    const lower = text.toLowerCase();
+
+    // 1. Natural Language Priority Triage (Core intent)
+    if (lower.includes("what should i") || lower.includes("priorit") || lower.includes("today") || lower.includes("first")) {
+      const resp = await invokeMcpTool("tool_get_priority_ranking", {});
+      let inner = resp.result ? (typeof resp.result === "string" ? JSON.parse(resp.result) : resp.result) : resp;
+      if (inner && inner.content && inner.content[0] && typeof inner.content[0].text === "string") {
+        try { inner = JSON.parse(inner.content[0].text); } catch {}
+      }
+
+      const ranked = inner.ranked || [];
+      if (!ranked.length) {
+        const msg = "You currently have no pending deadlines recorded. Add an assignment to calculate priority rankings.";
+        addDialogueMsg(msg, "bot");
+        speakText(msg);
+      } else {
+        const top = ranked[0];
+        const lines = ranked.slice(0, 5).map((d, i) => {
+          const reason = d.bedrock_reason || d.deterministic_reason;
+          const statusPrefix = d.is_overdue ? "[OVERDUE] " : "";
+          return `${i + 1}. ${d.title} (${d.course}) ${statusPrefix}\n   Due: ${d.due_at.replace('T', ' ')} · ${reason}`;
+        });
+
+        const reply = "Top Academic Priorities:\n\n" + lines.join("\n\n");
+        addDialogueMsg(reply, "bot");
+
+        const voiceSpoken = top.is_overdue
+          ? `Urgent attention: Your ${top.title} is overdue! You should address it right away.`
+          : `Based on urgency and grade weight, focus on ${top.title} for ${top.course} first.`;
+        speakText(voiceSpoken);
+      }
+      refreshAll();
+    }
+    // 2. Add deadline via natural language
+    else if (lower.includes("add") && (lower.includes("due") || lower.includes("exam") || lower.includes("project") || lower.includes("lab"))) {
+      let title = "Assignment";
+      let due = new Date(Date.now() + 86400000).toISOString().slice(0, 10) + "T23:59";
+      let weight = 15;
+
+      const titleMatch = text.match(/add\s+(.+?)(?:\s+due|\s+worth|\s+tomorrow|$)/i);
+      if (titleMatch) title = titleMatch[1].trim();
+
+      const weightMatch = text.match(/(\d+)%/);
+      if (weightMatch) weight = parseFloat(weightMatch[1]);
+
+      await invokeMcpTool("tool_add_deadline", {
+        title, course: "CS", due_at: due, weight_pct: weight
+      });
+
+      const reply = `Saved deadline: "${title}" due ${due.replace('T', ' ')} (Weight: ${weight}%).`;
+      addDialogueMsg(reply, "bot");
+      speakText(`Added ${title} to your schedule.`);
+      refreshAll();
+    }
+    // 3. List deadlines
+    else {
+      const resp = await invokeMcpTool("tool_list_deadlines", { window_days: 14 });
+      let inner = resp.result ? (typeof resp.result === "string" ? JSON.parse(resp.result) : resp.result) : resp;
+      if (inner && inner.content && inner.content[0] && typeof inner.content[0].text === "string") {
+        try { inner = JSON.parse(inner.content[0].text); } catch {}
+      }
+      const list = inner.deadlines || [];
+      if (!list.length) {
+        addDialogueMsg("No pending deadlines in the next 14 days.", "bot");
+      } else {
+        const textLines = list.map((d, i) => `${i + 1}. ${d.title} (${d.course}) — due ${d.due_at.replace('T', ' ')}`);
+        addDialogueMsg("Upcoming in next 14 days:\n\n" + textLines.join("\n"), "bot");
+        speakText(`You have ${list.length} deadlines approaching.`);
+      }
+      refreshAll();
+    }
+  } catch (err) {
+    addDialogueMsg("Error: " + err.message, "err");
+  } finally {
+    sendBtn.disabled = false;
+    chatInput.focus();
   }
 };
 
-input.addEventListener("keydown", e => {
+chatInput.addEventListener("keydown", e => {
   if (e.key === "Enter") sendBtn.click();
 });
 
-// Speech Recognition (Microphone) with Alexa Chimes
+// Speech Recognition
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new SpeechRec();
-  recognition.continuous = false;
-  recognition.interimResults = false;
+  const rec = new SpeechRec();
+  rec.continuous = false;
+  rec.interimResults = false;
 
-  micBtn.onclick = () => {
-    playAlexaChime("listen");
-    recognition.start();
-    micBtn.classList.add("active");
-    orb.classList.add("listening");
-    document.getElementById("speechStatus").textContent = "Alexa Listening...";
+  const mic = document.getElementById("micBtn");
+  mic.onclick = () => {
+    rec.start();
+    mic.classList.add("btn-primary");
+    document.getElementById("dialogueStatus").textContent = "Listening…";
   };
 
-  recognition.onresult = (e) => {
-    const text = e.results[0][0].transcript;
-    input.value = text;
-    micBtn.classList.remove("active");
-    orb.classList.remove("listening");
-    document.getElementById("speechStatus").textContent = "Voice Ready";
+  rec.onresult = (e) => {
+    chatInput.value = e.results[0][0].transcript;
+    mic.classList.remove("btn-primary");
+    document.getElementById("dialogueStatus").textContent = "Ready";
     sendBtn.click();
   };
 
-  recognition.onerror = () => {
-    micBtn.classList.remove("active");
-    orb.classList.remove("listening");
-    document.getElementById("speechStatus").textContent = "Voice Ready";
+  rec.onerror = () => {
+    mic.classList.remove("btn-primary");
+    document.getElementById("dialogueStatus").textContent = "Ready";
   };
 
-  recognition.onend = () => {
-    micBtn.classList.remove("active");
-    orb.classList.remove("listening");
+  rec.onend = () => {
+    mic.classList.remove("btn-primary");
+    document.getElementById("dialogueStatus").textContent = "Ready";
   };
 } else {
-  micBtn.style.display = "none";
+  document.getElementById("micBtn").style.display = "none";
 }
 
-// Initial load
-addMsg("Hi! I'm DueSignal, your Alexa+ deadline triage assistant. You can add assignments using the button above, import an .ics calendar file, or ask 'What should I study tonight?'", "bot");
-refreshDeadlines();
+// Initial Boot
+addDialogueMsg("DueSignal MCP server connected. Ask 'What should I do today?' to evaluate your highest priority deadlines.", "bot");
+refreshAll();
 </script>
 </body>
 </html>
