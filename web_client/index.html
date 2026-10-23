@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DueSignal · Academic Deadline Triage MCP</title>
+<title>DueSignal · Academic Deadline Triage</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -11,139 +11,144 @@
   :root {
     --bg-base: #090d16;
     --bg-surface: #0f172a;
-    --bg-elevated: #1e293b;
-    --border-subtle: #334155;
-    --border-focus: #38bdf8;
+    --bg-elevated: #162032;
+    --bg-hover: #1e293b;
+    --border: #223049;
+    --border-light: #2d3f5e;
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
-    --accent: #0284c7;
-    --accent-hover: #0369a1;
-    --accent-light: rgba(2, 132, 199, 0.15);
-    --success: #10b981;
-    --success-bg: rgba(16, 185, 129, 0.12);
-    --warning: #f59e0b;
-    --warning-bg: rgba(245, 158, 11, 0.12);
+    --accent: #0ea5e9;
+    --accent-hover: #0284c7;
+    --accent-dim: rgba(14, 165, 233, 0.12);
     --danger: #ef4444;
-    --danger-bg: rgba(239, 68, 68, 0.12);
-    --ring: rgba(56, 189, 248, 0.35);
+    --danger-dim: rgba(239, 68, 68, 0.12);
+    --warning: #f59e0b;
+    --warning-dim: rgba(245, 158, 11, 0.12);
+    --success: #10b981;
+    --success-dim: rgba(16, 185, 129, 0.12);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: var(--bg-base);
     color: var(--text-primary);
     min-height: 100vh;
-    padding: 1.5rem 1rem 3rem;
+    padding: 1.25rem 1rem 3rem;
     line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
 
   .container {
-    max-width: 1240px;
+    max-width: 1200px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1rem;
   }
 
-  /* Header & System Status */
+  /* Header */
   header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.5rem;
+    padding: 0.85rem 1.25rem;
     background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--border);
     border-radius: 12px;
+    flex-wrap: wrap;
+    gap: 0.75rem;
   }
 
   .brand {
     display: flex;
     align-items: center;
-    gap: 0.85rem;
+    gap: 0.75rem;
   }
 
   .brand-logo {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, var(--accent) 0%, #0369a1 100%);
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--accent);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: #030712;
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 0.82rem;
+    letter-spacing: -0.02em;
   }
 
-  h1 {
-    font-size: 1.15rem;
+  .brand-text h1 {
+    font-size: 1.05rem;
     font-weight: 700;
     color: #fff;
-    letter-spacing: -0.01em;
+    line-height: 1.2;
   }
 
-  .subtitle {
-    font-size: 0.78rem;
+  .brand-text p {
+    font-size: 0.72rem;
     color: var(--text-secondary);
   }
 
-  .system-meta {
+  .header-controls {
     display: flex;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
-  .health-pill {
+  .status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    font-size: 0.74rem;
-    font-weight: 600;
-    padding: 0.3rem 0.65rem;
-    border-radius: 6px;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border-subtle);
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 500;
     color: var(--text-secondary);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.55rem;
+    border-radius: 6px;
   }
 
-  .health-dot {
-    width: 7px;
-    height: 7px;
+  .status-dot {
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: var(--success);
   }
 
-  .health-dot.offline {
-    background: var(--danger);
-  }
+  .status-dot.offline { background: var(--danger); }
 
   .btn {
     font-family: inherit;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 600;
-    padding: 0.45rem 0.85rem;
-    border-radius: 8px;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
     border: 1px solid transparent;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.35rem;
     transition: all 0.15s ease;
+    white-space: nowrap;
   }
 
   .btn:focus-visible {
-    outline: 2px solid var(--border-focus);
-    outline-offset: 2px;
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
   }
 
   .btn-primary {
     background: var(--accent);
-    color: #fff;
+    color: #030712;
   }
   .btn-primary:hover:not(:disabled) {
     background: var(--accent-hover);
+    color: #fff;
   }
   .btn-primary:disabled {
     opacity: 0.5;
@@ -152,104 +157,114 @@
 
   .btn-secondary {
     background: var(--bg-elevated);
-    border-color: var(--border-subtle);
+    border-color: var(--border);
     color: var(--text-primary);
   }
   .btn-secondary:hover:not(:disabled) {
-    background: #334155;
-    border-color: #475569;
+    background: var(--bg-hover);
+    border-color: var(--border-light);
   }
 
-  .btn-danger {
-    background: var(--danger-bg);
-    border-color: rgba(239, 68, 68, 0.35);
-    color: #f87171;
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 0.25rem 0.5rem;
   }
-  .btn-danger:hover:not(:disabled) {
-    background: rgba(239, 68, 68, 0.25);
-  }
-
-  /* Command Center KPI Banner */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
+  .btn-ghost:hover {
+    color: #fff;
+    background: var(--bg-hover);
   }
 
-  @media (max-width: 900px) {
-    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  .kpi-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: 10px;
-    padding: 0.9rem 1.1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .kpi-title {
-    font-size: 0.72rem;
-    font-weight: 600;
+  .btn-danger-ghost {
+    background: transparent;
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+  }
+  .btn-danger-ghost:hover {
+    color: var(--danger);
+    background: var(--danger-dim);
   }
 
-  .kpi-value {
-    font-size: 1.4rem;
+  /* Compact Overview Summary Bar (Replaces Cluttered 4-Card Grid) */
+  .summary-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  .summary-stats {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-group {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+  }
+
+  .stat-num {
+    font-size: 1.15rem;
     font-weight: 700;
     color: #fff;
     font-family: 'JetBrains Mono', monospace;
   }
 
-  .kpi-note {
-    font-size: 0.72rem;
+  .stat-label {
+    font-size: 0.74rem;
     color: var(--text-secondary);
   }
 
-  /* Main Workspace Layout */
-  .workspace {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 1.25rem;
+  .stat-group.urgent .stat-num { color: var(--danger); }
+  .stat-group.progress .stat-num { color: var(--success); }
+
+  .summary-engine {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
   }
 
-  @media (max-width: 960px) {
+  .engine-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+  }
+
+  /* Main Two-Column Layout (70% Deadlines / 30% Assistant) */
+  .workspace {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
     .workspace { grid-template-columns: 1fr; }
   }
 
   .panel {
     background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 1.25rem;
+    padding: 1.1rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.85rem;
   }
 
-  .panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border-subtle);
-    padding-bottom: 0.75rem;
-  }
-
-  .panel-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-  }
-
-  /* Filters & Controls */
-  .filter-row {
+  .panel-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -257,273 +272,308 @@
     flex-wrap: wrap;
   }
 
-  .search-input {
+  .panel-heading {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .panel-count {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* Filter Controls */
+  .controls-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .search-box {
     flex: 1;
-    min-width: 180px;
+    min-width: 160px;
     background: var(--bg-base);
-    border: 1px solid var(--border-subtle);
-    border-radius: 8px;
-    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 0.7rem;
     color: #fff;
-    font-size: 0.82rem;
-  }
-
-  .search-input:focus {
+    font-size: 0.78rem;
     outline: none;
-    border-color: var(--border-focus);
-    box-shadow: 0 0 0 2px var(--ring);
   }
 
-  select.control-select {
+  .search-box:focus {
+    border-color: var(--accent);
+  }
+
+  .select-box {
     background: var(--bg-base);
-    border: 1px solid var(--border-subtle);
-    border-radius: 8px;
-    padding: 0.45rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
     color: #fff;
-    font-size: 0.82rem;
-  }
-
-  select.control-select:focus {
+    font-size: 0.78rem;
     outline: none;
-    border-color: var(--border-focus);
+    cursor: pointer;
   }
 
-  /* Task / Deadline Cards */
+  .select-box:focus { border-color: var(--accent); }
+
+  /* Deadlines List */
   .task-list {
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
-    max-height: 600px;
+    gap: 0.5rem;
+    max-height: 580px;
     overflow-y: auto;
   }
 
-  .task-card {
+  .task-row {
     background: var(--bg-elevated);
-    border: 1px solid var(--border-subtle);
-    border-radius: 10px;
-    padding: 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 0.9rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    transition: border-color 0.15s ease;
+    gap: 0.4rem;
+    transition: all 0.15s ease;
   }
 
-  .task-card:hover {
-    border-color: #475569;
+  .task-row:hover {
+    border-color: var(--border-light);
+    background: #192438;
   }
 
-  .task-card.overdue {
-    border-left: 4px solid var(--danger);
+  .task-row.overdue {
+    border-left: 3px solid var(--danger);
   }
 
-  .task-card.critical {
-    border-left: 4px solid var(--warning);
+  .task-row.critical {
+    border-left: 3px solid var(--warning);
   }
 
-  .task-card.completed {
-    opacity: 0.65;
-    border-left: 4px solid var(--success);
+  .task-row.completed {
+    opacity: 0.6;
+    border-left: 3px solid var(--success);
   }
 
-  .task-top {
+  .task-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 0.5rem;
   }
 
+  .task-main {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
   .task-title {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 600;
     color: #fff;
   }
 
-  .task-card.completed .task-title {
+  .task-row.completed .task-title {
     text-decoration: line-through;
     color: var(--text-muted);
   }
 
-  .task-badges {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .tag {
-    font-size: 0.68rem;
-    font-weight: 700;
-    padding: 0.15rem 0.45rem;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-
-  .tag-course {
-    background: #1e3a8a;
-    color: #93c5fd;
-    border: 1px solid #2563eb;
-  }
-
-  .tag-overdue {
-    background: var(--danger-bg);
-    color: #f87171;
-    border: 1px solid rgba(239, 68, 68, 0.4);
-  }
-
-  .tag-critical {
-    background: var(--warning-bg);
-    color: #fbbf24;
-    border: 1px solid rgba(245, 158, 11, 0.4);
-  }
-
-  .tag-high {
-    background: rgba(234, 179, 8, 0.12);
-    color: #fef08a;
-    border: 1px solid rgba(234, 179, 8, 0.3);
-  }
-
-  .tag-medium {
-    background: var(--accent-light);
-    color: #7dd3fc;
-    border: 1px solid rgba(56, 189, 248, 0.3);
-  }
-
-  .tag-low {
-    background: rgba(148, 163, 184, 0.12);
-    color: #cbd5e1;
-    border: 1px solid rgba(148, 163, 184, 0.25);
-  }
-
-  .task-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.78rem;
-    color: var(--text-secondary);
-  }
-
-  .task-reason {
-    font-size: 0.78rem;
-    color: #cbd5e1;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 6px;
-    padding: 0.4rem 0.6rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .source-pill {
-    font-size: 0.65rem;
-    font-weight: 600;
-    color: var(--text-muted);
+  .course-pill {
     font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #93c5fd;
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
   }
 
-  .source-pill.bedrock {
+  .urgency-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .urgency-badge.overdue {
+    background: var(--danger-dim);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+  }
+
+  .urgency-badge.critical {
+    background: var(--warning-dim);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+  }
+
+  .urgency-badge.high {
+    background: rgba(234, 179, 8, 0.1);
+    color: #fef08a;
+    border: 1px solid rgba(234, 179, 8, 0.25);
+  }
+
+  .urgency-badge.medium {
+    background: var(--accent-dim);
+    color: #7dd3fc;
+    border: 1px solid rgba(14, 165, 233, 0.25);
+  }
+
+  .urgency-badge.low {
+    background: rgba(148, 163, 184, 0.1);
+    color: #cbd5e1;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+  }
+
+  .task-info-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.74rem;
+    color: var(--text-secondary);
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .task-due-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .task-due-time.overdue {
+    color: #f87171;
+    font-weight: 600;
+  }
+
+  .task-reason-line {
+    font-size: 0.74rem;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.15rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .reason-text {
+    color: #cbd5e1;
+    font-style: italic;
+  }
+
+  .attr-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    color: var(--text-muted);
+  }
+
+  .attr-pill.bedrock {
     color: #a855f7;
+    font-weight: 600;
   }
 
-  .task-actions {
+  .row-actions {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.35rem;
   }
 
-  .btn-sm {
-    font-size: 0.72rem;
-    padding: 0.2rem 0.55rem;
-    border-radius: 6px;
-  }
-
-  /* Interactive Assistant Simulator Column */
-  .chat-box {
+  /* Assistant Dialogue Column */
+  .chat-stream {
     background: var(--bg-base);
-    border: 1px solid var(--border-subtle);
-    border-radius: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
     padding: 0.85rem;
-    height: 340px;
+    height: 320px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.65rem;
   }
 
-  .chat-msg {
+  .chat-bubble {
     max-width: 90%;
-    padding: 0.65rem 0.85rem;
+    padding: 0.6rem 0.8rem;
     border-radius: 8px;
-    font-size: 0.83rem;
+    font-size: 0.8rem;
     line-height: 1.4;
     white-space: pre-wrap;
   }
 
-  .chat-msg.user {
+  .chat-bubble.user {
     align-self: flex-end;
     background: var(--accent);
-    color: #fff;
+    color: #030712;
+    font-weight: 500;
   }
 
-  .chat-msg.bot {
+  .chat-bubble.bot {
     align-self: flex-start;
     background: var(--bg-elevated);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--border);
     color: var(--text-primary);
   }
 
-  .chat-msg.err {
+  .chat-bubble.err {
     align-self: flex-start;
-    background: var(--danger-bg);
-    border: 1px solid rgba(239, 68, 68, 0.35);
+    background: var(--danger-dim);
+    border: 1px solid rgba(239, 68, 68, 0.3);
     color: #fca5a5;
   }
 
-  .input-row {
+  .chat-input-bar {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
-  .input-row input {
+  .chat-field {
     flex: 1;
     background: var(--bg-base);
-    border: 1px solid var(--border-subtle);
-    border-radius: 8px;
-    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.45rem 0.75rem;
     color: #fff;
-    font-size: 0.84rem;
-  }
-
-  .input-row input:focus {
+    font-size: 0.8rem;
     outline: none;
-    border-color: var(--border-focus);
-    box-shadow: 0 0 0 2px var(--ring);
   }
 
-  /* Technical Inspector */
+  .chat-field:focus { border-color: var(--accent); }
+
+  /* Collapsible Trace */
   details.inspector {
-    border: 1px solid var(--border-subtle);
-    border-radius: 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
     background: var(--bg-base);
+    font-size: 0.72rem;
   }
 
   details.inspector summary {
-    font-size: 0.74rem;
-    font-weight: 600;
+    padding: 0.45rem 0.7rem;
     color: var(--text-muted);
-    padding: 0.5rem 0.75rem;
+    font-weight: 500;
     cursor: pointer;
-    user-select: none;
   }
 
-  pre.json-viewer {
+  pre.trace-body {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     color: #94a3b8;
     background: #040711;
-    padding: 0.75rem;
-    border-top: 1px solid var(--border-subtle);
-    max-height: 160px;
+    padding: 0.65rem;
+    border-top: 1px solid var(--border);
+    max-height: 140px;
     overflow-y: auto;
     white-space: pre-wrap;
   }
@@ -538,206 +588,210 @@
     align-items: center;
     justify-content: center;
     z-index: 100;
+    padding: 1rem;
   }
 
   .modal-overlay.open { display: flex; }
 
   .modal {
     background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--border-light);
     border-radius: 12px;
-    padding: 1.5rem;
-    max-width: 480px;
-    width: 90%;
+    padding: 1.25rem;
+    max-width: 440px;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    gap: 0.85rem;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
   }
 
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.25rem;
   }
 
   .form-group label {
-    font-size: 0.76rem;
+    font-size: 0.74rem;
     font-weight: 600;
     color: var(--text-secondary);
   }
 
   .form-group input, .form-group select {
     background: var(--bg-base);
-    border: 1px solid var(--border-subtle);
-    border-radius: 8px;
-    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.45rem 0.65rem;
     color: #fff;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    outline: none;
   }
 
-  .form-group input:focus {
-    outline: none;
-    border-color: var(--border-focus);
-    box-shadow: 0 0 0 2px var(--ring);
+  .form-group input:focus { border-color: var(--accent); }
+
+  /* Mobile Tweaks */
+  @media (max-width: 600px) {
+    header { flex-direction: column; align-items: flex-start; }
+    .header-controls { width: 100%; justify-content: space-between; }
+    .summary-stats { width: 100%; justify-content: space-between; }
+    .summary-engine { width: 100%; justify-content: flex-start; }
   }
 </style>
 </head>
 <body>
 <div class="container">
-  <!-- System Header -->
+  <!-- Header Bar -->
   <header>
     <div class="brand">
       <div class="brand-logo">DS</div>
-      <div>
+      <div class="brand-text">
         <h1>DueSignal</h1>
-        <div class="subtitle">Academic Deadline Triage · Alexa+-compatible MCP Protocol 2025-11-25</div>
+        <p>Academic Deadline Triage · Alexa+-compatible MCP</p>
       </div>
     </div>
-    <div class="system-meta">
-      <div id="healthBadge" class="health-pill">
-        <span id="healthDot" class="health-dot"></span>
-        <span id="healthText">Checking Server…</span>
+    <div class="header-controls">
+      <div id="healthBadge" class="status-badge">
+        <span id="healthDot" class="status-dot"></span>
+        <span id="healthText">Connecting…</span>
       </div>
-      <button class="btn btn-secondary btn-sm" onclick="openTokenModal()">Config Auth</button>
-      <button id="ttsToggle" class="btn btn-secondary btn-sm" title="Toggle Spoken Speech">🔊 Voice On</button>
+      <button class="btn btn-secondary" onclick="openTokenModal()">Token</button>
+      <button id="ttsToggle" class="btn btn-secondary">🔊 Voice</button>
     </div>
   </header>
 
-  <!-- Real Workload Command Center KPIs -->
-  <section class="kpi-grid">
-    <div class="kpi-card">
-      <span class="kpi-title">Active Workload</span>
-      <span id="kpiPending" class="kpi-value">—</span>
-      <span class="kpi-note">Pending assignments</span>
+  <!-- Clean Overview Stats Bar -->
+  <section class="summary-bar">
+    <div class="summary-stats">
+      <div class="stat-group">
+        <span id="kpiPending" class="stat-num">—</span>
+        <span class="stat-label">Pending</span>
+      </div>
+      <div class="stat-group urgent">
+        <span id="kpiCritical" class="stat-num">—</span>
+        <span id="kpiCriticalLabel" class="stat-label">Urgent</span>
+      </div>
+      <div class="stat-group progress">
+        <span id="kpiRate" class="stat-num">—%</span>
+        <span class="stat-label">Completed</span>
+      </div>
     </div>
-    <div class="kpi-card">
-      <span class="kpi-title">Attention Required</span>
-      <span id="kpiCritical" class="kpi-value" style="color:var(--warning)">—</span>
-      <span id="kpiOverdueNote" class="kpi-note">0 overdue · 0 critical</span>
-    </div>
-    <div class="kpi-card">
-      <span class="kpi-title">Completion Rate</span>
-      <span id="kpiRate" class="kpi-value" style="color:var(--success)">—%</span>
-      <span id="kpiCompletedNote" class="kpi-note">0 of 0 completed</span>
-    </div>
-    <div class="kpi-card">
-      <span class="kpi-title">AI Explanations</span>
-      <span id="kpiBedrock" class="kpi-value" style="font-size:1.15rem">Checking…</span>
-      <span id="kpiBedrockNote" class="kpi-note">Deterministic engine active</span>
+    <div class="summary-engine">
+      <span>Triage Engine:</span>
+      <span id="kpiEngine" class="engine-chip">Deterministic</span>
     </div>
   </section>
 
-  <!-- Main Workspace -->
+  <!-- Main Grid Layout -->
   <main class="workspace">
-    <!-- Deadline Inventory Panel -->
+    <!-- Left Column: Deadlines Inventory -->
     <section class="panel">
-      <div class="panel-header">
-        <div class="panel-title">
-          <span>Deadlines Inventory</span>
-          <span id="inventoryCount" style="font-size:0.75rem; color:var(--text-muted); font-weight:normal">(0 records)</span>
+      <div class="panel-top">
+        <div class="panel-heading">
+          <span>Deadlines</span>
+          <span id="inventoryCount" class="panel-count">(0)</span>
         </div>
-        <div style="display:flex; gap:0.5rem">
-          <button class="btn btn-primary btn-sm" onclick="openAddModal()">+ Add Deadline</button>
-          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('icsInput').click()">Import .ics</button>
+        <div style="display:flex; gap:0.4rem">
+          <button class="btn btn-primary" onclick="openAddModal()">+ Add Deadline</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('icsInput').click()">Import .ics</button>
           <input type="file" id="icsInput" accept=".ics,text/calendar" style="display:none" onchange="handleIcsImport(event)">
         </div>
       </div>
 
-      <!-- Filters & Sorting Controls -->
-      <div class="filter-row">
-        <input type="text" id="searchInput" class="search-input" placeholder="Search by title or course…" oninput="applyFilters()" />
+      <!-- Search & Filters -->
+      <div class="controls-row">
+        <input type="text" id="searchInput" class="search-box" placeholder="Filter by title or course…" oninput="applyFilters()" />
         
-        <select id="statusFilter" class="control-select" onchange="applyFilters()">
-          <option value="pending">Pending Only</option>
-          <option value="completed">Completed Only</option>
-          <option value="all">All Statuses</option>
+        <select id="statusFilter" class="select-box" onchange="applyFilters()">
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+          <option value="all">All</option>
         </select>
 
-        <select id="sortSelect" class="control-select" onchange="applyFilters()">
-          <option value="priority">Sort: Urgency Priority</option>
+        <select id="sortSelect" class="select-box" onchange="applyFilters()">
+          <option value="priority">Sort: Priority</option>
           <option value="due">Sort: Due Date</option>
           <option value="weight">Sort: Grade Weight</option>
         </select>
       </div>
 
-      <!-- Task Cards List -->
+      <!-- Task List Container -->
       <div id="taskList" class="task-list">
-        <div style="text-align:center; padding:3rem 0; color:var(--text-muted); font-size:0.85rem">
-          Loading deadlines from SQLite…
+        <div style="text-align:center; padding:3rem 0; color:var(--text-muted); font-size:0.8rem">
+          Loading deadlines…
         </div>
       </div>
     </section>
 
-    <!-- Alexa+ Dialogue & Activity Panel -->
+    <!-- Right Column: Alexa+ Dialogue Simulation -->
     <section class="panel">
-      <div class="panel-header">
-        <div class="panel-title">
-          <span>Alexa+ Dialogue Simulation</span>
+      <div class="panel-top">
+        <div class="panel-heading">
+          <span>Alexa+ Dialogue</span>
         </div>
-        <span id="dialogueStatus" style="font-size:0.75rem; color:var(--text-muted)">Ready</span>
+        <span id="dialogueStatus" style="font-size:0.72rem; color:var(--text-muted)">Ready</span>
       </div>
 
-      <!-- Chat Stream -->
-      <div id="chatBox" class="chat-box"></div>
+      <!-- Chat History -->
+      <div id="chatBox" class="chat-stream"></div>
 
-      <!-- Dialogue Input -->
-      <div class="input-row">
-        <input type="text" id="chatInput" placeholder="Try: 'What should I do today?' or 'Add CS301 exam tomorrow 25%'" />
+      <!-- Input Bar -->
+      <div class="chat-input-bar">
+        <input type="text" id="chatInput" class="chat-field" placeholder="Ask 'What should I do today?'" />
         <button id="micBtn" class="btn btn-secondary" title="Speech input">🎙️</button>
         <button id="chatSendBtn" class="btn btn-primary">Send</button>
       </div>
 
       <!-- Quick prompts -->
-      <div style="display:flex; gap:0.4rem; overflow-x:auto; padding-bottom:0.2rem">
-        <button class="btn btn-secondary btn-sm" onclick="triggerDialogue('What should I do today?')">⚡ What should I do today?</button>
-        <button class="btn btn-secondary btn-sm" onclick="triggerDialogue('List pending deadlines')">📋 List deadlines</button>
+      <div style="display:flex; gap:0.35rem; flex-wrap:wrap">
+        <button class="btn btn-ghost" onclick="triggerDialogue('What should I do today?')">⚡ What should I do today?</button>
+        <button class="btn btn-ghost" onclick="triggerDialogue('List pending deadlines')">📋 List deadlines</button>
       </div>
 
-      <!-- Technical Protocol Inspector (Collapsible) -->
+      <!-- Collapsible Protocol Inspector -->
       <details class="inspector">
-        <summary>Technical Protocol Trace (Streamable HTTP)</summary>
-        <pre id="protocolViewer" class="json-viewer">Awaiting tool invocation…</pre>
+        <summary>Protocol Inspector (JSON-RPC 2.0)</summary>
+        <pre id="protocolViewer" class="trace-body">Awaiting tool invocation…</pre>
       </details>
     </section>
   </main>
 </div>
 
-<!-- Add / Edit Deadline Modal -->
+<!-- Add / Edit Modal -->
 <div id="deadlineModal" class="modal-overlay">
   <div class="modal">
     <div style="display:flex; justify-content:space-between; align-items:center">
-      <h3 id="modalHeading" style="color:#fff; font-size:1.05rem">Add Deadline</h3>
-      <button onclick="closeDeadlineModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.2rem">&times;</button>
+      <h3 id="modalHeading" style="color:#fff; font-size:0.95rem; font-weight:700">Add Deadline</h3>
+      <button onclick="closeDeadlineModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem">&times;</button>
     </div>
 
     <input type="hidden" id="editId" value="" />
 
     <div class="form-group">
-      <label>Course Code</label>
-      <input type="text" id="formCourse" placeholder="e.g. CS 301, MATH 201" />
+      <label>Course</label>
+      <input type="text" id="formCourse" placeholder="e.g. CS 301" />
     </div>
 
     <div class="form-group">
-      <label>Assignment / Exam Title</label>
-      <input type="text" id="formTitle" placeholder="e.g. Operating Systems Lab 3" />
+      <label>Assignment Title</label>
+      <input type="text" id="formTitle" placeholder="e.g. Kernel Lab 3" />
     </div>
 
     <div class="form-group">
-      <label>Due Date & Time (Local)</label>
+      <label>Due Date & Time</label>
       <input type="datetime-local" id="formDue" />
     </div>
 
     <div class="form-group">
-      <label>Grade Weight (% of Final Grade): <span id="weightDisplay" style="color:var(--accent)">15%</span></label>
+      <label>Grade Weight: <span id="weightDisplay" style="color:var(--accent)">15%</span></label>
       <input type="range" id="formWeight" min="0" max="60" value="15" oninput="document.getElementById('weightDisplay').textContent = this.value + '%'" />
     </div>
 
-    <div id="formError" style="display:none; color:var(--danger); font-size:0.78rem"></div>
+    <div id="formError" style="display:none; color:var(--danger); font-size:0.74rem"></div>
 
-    <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.5rem">
+    <div style="display:flex; justify-content:flex-end; gap:0.4rem; margin-top:0.35rem">
       <button class="btn btn-secondary" onclick="closeDeadlineModal()">Cancel</button>
-      <button id="saveBtn" class="btn btn-primary" onclick="submitDeadlineForm()">Save Deadline</button>
+      <button id="saveBtn" class="btn btn-primary" onclick="submitDeadlineForm()">Save</button>
     </div>
   </div>
 </div>
@@ -745,17 +799,16 @@
 <!-- Token Modal -->
 <div id="tokenModal" class="modal-overlay">
   <div class="modal">
-    <h3 style="color:#fff; font-size:1.05rem">MCP Authentication Token</h3>
-    <p style="font-size:0.8rem; color:var(--text-secondary)">
-      Stored locally in your browser and transmitted as <code>Authorization: Bearer &lt;token&gt;</code> to protect MCP tools.
+    <h3 style="color:#fff; font-size:0.95rem; font-weight:700">MCP Auth Token</h3>
+    <p style="font-size:0.75rem; color:var(--text-secondary)">
+      Stored locally in browser and sent in Authorization header to <code>/mcp</code>.
     </p>
     <div class="form-group">
-      <label>Bearer Token</label>
-      <input type="text" id="tokenField" style="font-family:'JetBrains Mono', monospace; font-size:0.8rem" />
+      <input type="text" id="tokenField" style="font-family:'JetBrains Mono', monospace; font-size:0.75rem" />
     </div>
-    <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.5rem">
+    <div style="display:flex; justify-content:flex-end; gap:0.4rem">
       <button class="btn btn-secondary" onclick="closeTokenModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveToken()">Save & Reconnect</button>
+      <button class="btn btn-primary" onclick="saveToken()">Save</button>
     </div>
   </div>
 </div>
@@ -771,12 +824,11 @@ let ttsActive = true;
 let reqCounter = 1;
 let currentDeadlines = [];
 
-// Audio & Speech
+// Audio
 const ttsBtn = document.getElementById("ttsToggle");
 ttsBtn.onclick = () => {
   ttsActive = !ttsActive;
-  ttsBtn.textContent = ttsActive ? "🔊 Voice On" : "🔇 Voice Off";
-  ttsBtn.classList.toggle("btn-secondary", ttsActive);
+  ttsBtn.textContent = ttsActive ? "🔊 Voice" : "🔇 Mute";
 };
 
 function speakText(text) {
@@ -803,7 +855,7 @@ function saveToken() {
   refreshAll();
 }
 
-// MCP JSON-RPC 2.0 Client Dispatcher
+// MCP JSON-RPC Dispatcher
 async function invokeMcpTool(name, args) {
   const payload = {
     jsonrpc: "2.0",
@@ -829,20 +881,13 @@ async function invokeMcpTool(name, args) {
   const rawText = await res.text();
   viewer.textContent += `\n\n← RESPONSE (HTTP ${res.status}):\n` + rawText;
 
-  if (!res.ok) {
-    throw new Error(`Server returned HTTP ${res.status}: ${rawText}`);
-  }
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${rawText}`);
 
-  // Parse SSE or JSON
   const lines = rawText.split("\n").filter(l => l.trim().length > 0);
   const dataLine = lines.find(l => l.startsWith("data:"));
   const candidate = dataLine ? dataLine.replace(/^data:\s*/, "") : rawText;
 
-  try {
-    return JSON.parse(candidate);
-  } catch {
-    return { raw: rawText };
-  }
+  try { return JSON.parse(candidate); } catch { return { raw: rawText }; }
 }
 
 // Data Refresh & Health Polling
@@ -856,29 +901,28 @@ async function refreshSummary() {
     if (!res.ok) throw new Error("Health check failed");
     const data = await res.json();
 
-    document.getElementById("healthDot").className = "health-dot";
+    document.getElementById("healthDot").className = "status-dot";
     document.getElementById("healthText").textContent = "Operational";
 
     document.getElementById("kpiPending").textContent = data.pending;
-    document.getElementById("kpiCritical").textContent = data.critical_count + data.overdue_count;
-    document.getElementById("kpiOverdueNote").textContent = `${data.overdue_count} overdue · ${data.critical_count} critical (<24h)`;
+    const urgentCount = data.critical_count + data.overdue_count;
+    document.getElementById("kpiCritical").textContent = urgentCount;
+    document.getElementById("kpiCriticalLabel").textContent = urgentCount === 1 ? "Urgent task" : "Urgent tasks";
     document.getElementById("kpiRate").textContent = `${data.completion_rate_pct}%`;
-    document.getElementById("kpiCompletedNote").textContent = `${data.completed} of ${data.total} completed`;
 
-    const bedrockEl = document.getElementById("kpiBedrock");
-    const bedrockNote = document.getElementById("kpiBedrockNote");
+    const engineEl = document.getElementById("kpiEngine");
     if (data.bedrock_configured) {
-      bedrockEl.textContent = "Amazon Bedrock";
-      bedrockEl.style.color = "#a855f7";
-      bedrockNote.textContent = "Nova / Claude available";
+      engineEl.textContent = "Bedrock Nova/Claude";
+      engineEl.style.color = "#a855f7";
+      engineEl.style.background = "rgba(168, 85, 247, 0.12)";
     } else {
-      bedrockEl.textContent = "Deterministic";
-      bedrockEl.style.color = "var(--text-primary)";
-      bedrockNote.textContent = "Deterministic fallback active";
+      engineEl.textContent = "Deterministic";
+      engineEl.style.color = "var(--accent)";
+      engineEl.style.background = "var(--accent-dim)";
     }
   } catch (err) {
-    document.getElementById("healthDot").className = "health-dot offline";
-    document.getElementById("healthText").textContent = "Offline / Error";
+    document.getElementById("healthDot").className = "status-dot offline";
+    document.getElementById("healthText").textContent = "Offline";
   }
 }
 
@@ -897,22 +941,53 @@ async function applyFilters() {
     renderTaskList(currentDeadlines);
   } catch (err) {
     document.getElementById("taskList").innerHTML = `
-      <div style="color:var(--danger); font-size:0.85rem; padding:1.5rem; text-align:center">
+      <div style="color:var(--danger); font-size:0.78rem; padding:1.5rem; text-align:center">
         Failed to fetch deadlines: ${err.message}
       </div>
     `;
   }
 }
 
+// Friendly Date Formatter (No raw ugly ISO strings)
+function formatHumanDate(isoStr) {
+  try {
+    const d = new Date(isoStr);
+    const now = new Date();
+    const isToday = d.toDateString() === now.toDateString();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const isTomorrow = d.toDateString() === tomorrow.toDateString();
+
+    const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    if (isToday) return `Today at ${timeStr}`;
+    if (isTomorrow) return `Tomorrow at ${timeStr}`;
+
+    const dateStr = d.toLocaleDateString([], { month: 'short', day: 'numeric' });
+    return `${dateStr} · ${timeStr}`;
+  } catch {
+    return isoStr.replace('T', ' ');
+  }
+}
+
+function formatRelativeRemaining(h, isCompleted) {
+  if (isCompleted) return "Completed";
+  if (h === undefined || h === null) return "Scheduled";
+  if (h < 0) return `${Math.abs(h).toFixed(1)}h overdue`;
+  if (h < 24) return `${Math.round(h)}h left`;
+  const days = Math.floor(h / 24);
+  return `${days}d left`;
+}
+
 function renderTaskList(list) {
   const container = document.getElementById("taskList");
-  document.getElementById("inventoryCount").textContent = `(${list.length} records)`;
+  document.getElementById("inventoryCount").textContent = `(${list.length})`;
 
   if (!list.length) {
     container.innerHTML = `
-      <div style="text-align:center; padding:3rem 1rem; color:var(--text-muted); font-size:0.85rem">
+      <div style="text-align:center; padding:3rem 1rem; color:var(--text-muted); font-size:0.8rem">
         No deadlines match your current filter.<br>
-        <span style="font-size:0.78rem">Click <strong>+ Add Deadline</strong> or import a calendar to get started.</span>
+        <span style="font-size:0.74rem">Click <strong>+ Add Deadline</strong> or import a calendar file.</span>
       </div>
     `;
     return;
@@ -920,57 +995,48 @@ function renderTaskList(list) {
 
   container.innerHTML = list.map(d => {
     const isCompleted = d.status === "completed";
-    let cardClass = "task-card";
+    let cardClass = "task-row";
     if (isCompleted) cardClass += " completed";
     else if (d.is_overdue) cardClass += " overdue";
     else if (d.urgency_band === "CRITICAL") cardClass += " critical";
 
-    const band = d.urgency_band || (isCompleted ? "DONE" : "UPCOMING");
-    const tagClass = `tag tag-${band.toLowerCase()}`;
-    const sourceClass = `source-pill ${d.explanation_source === 'bedrock' ? 'bedrock' : ''}`;
+    const band = d.urgency_band ? d.urgency_band.toLowerCase() : "low";
+    const dateFormatted = formatHumanDate(d.due_at);
+    const remainingFormatted = formatRelativeRemaining(d.hours_remaining, isCompleted);
+    const isBedrock = d.explanation_source === 'bedrock';
 
     return `
-      <article class="${cardClass}">
-        <div class="task-top">
-          <div>
+      <div class="${cardClass}">
+        <div class="task-header">
+          <div class="task-main">
+            <span class="course-pill">${escapeHtml(d.course)}</span>
             <span class="task-title">${escapeHtml(d.title)}</span>
+            ${!isCompleted && d.urgency_band ? `<span class="urgency-badge ${band}">${d.urgency_band}</span>` : ''}
           </div>
-          <div class="task-badges">
-            <span class="tag tag-course">${escapeHtml(d.course)}</span>
-            <span class="${tagClass}">${band}</span>
+          <div class="row-actions">
+            ${isCompleted 
+              ? `<button class="btn btn-ghost" onclick="reopenItem(${d.id})" title="Reopen task">↺ Reopen</button>`
+              : `<button class="btn btn-ghost" onclick="completeItem(${d.id})" title="Mark complete">✓ Done</button>`
+            }
+            <button class="btn btn-ghost" onclick="openEditModal(${d.id})" title="Edit">Edit</button>
+            <button class="btn btn-danger-ghost" onclick="deleteItem(${d.id})" title="Delete">✕</button>
           </div>
         </div>
 
-        <div class="task-meta">
-          <span>Due: <strong>${d.due_at.replace('T', ' ')}</strong> (${formatHours(d.hours_remaining, isCompleted)})</span>
-          <span>Weight: <strong>${d.weight_pct}%</strong> · Score: <strong>${d.score || 0}</strong></span>
+        <div class="task-info-line">
+          <span class="task-due-time ${d.is_overdue && !isCompleted ? 'overdue' : ''}">
+            📅 ${dateFormatted} (${remainingFormatted})
+          </span>
+          <span>Stakes: <strong>${d.weight_pct}%</strong> of grade</span>
         </div>
 
-        <div class="task-reason">
-          <span>${escapeHtml(d.explanation || d.deterministic_reason || "Scheduled")}</span>
-          <span class="${sourceClass}">${d.explanation_source === 'bedrock' ? '⚡ Bedrock' : '⚙ Deterministic'}</span>
+        <div class="task-reason-line">
+          <span class="reason-text">${escapeHtml(d.explanation || d.deterministic_reason || "Scheduled")}</span>
+          <span class="attr-pill ${isBedrock ? 'bedrock' : ''}">${isBedrock ? '⚡ Bedrock AI' : '⚙ Deterministic'}</span>
         </div>
-
-        <div class="task-actions" style="justify-content:flex-end">
-          ${isCompleted 
-            ? `<button class="btn btn-secondary btn-sm" onclick="reopenItem(${d.id})">↺ Reopen</button>`
-            : `<button class="btn btn-secondary btn-sm" onclick="completeItem(${d.id})">✓ Mark Done</button>`
-          }
-          <button class="btn btn-secondary btn-sm" onclick="openEditModal(${d.id})">Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteItem(${d.id})">Delete</button>
-        </div>
-      </article>
+      </div>
     `;
   }).join("");
-}
-
-function formatHours(h, isCompleted) {
-  if (isCompleted) return "Completed";
-  if (h === undefined || h === null) return "Pending";
-  if (h < 0) return `${Math.abs(h).toFixed(1)}h overdue`;
-  if (h < 24) return `${h.toFixed(1)}h left`;
-  const days = Math.floor(h / 24);
-  return `${days}d ${Math.round(h % 24)}h left`;
 }
 
 function escapeHtml(str) {
@@ -978,13 +1044,13 @@ function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[s]));
 }
 
-// Task Lifecycle Operations
+// Lifecycle Handlers
 async function completeItem(id) {
   try {
     const res = await fetch(`/api/deadlines/${id}/complete`, { method: "POST" });
-    if (!res.ok) throw new Error("Failed to mark deadline complete");
-    addDialogueMsg(`Marked deadline #${id} completed.`, "bot");
-    speakText(`Marked deadline #${id} complete.`);
+    if (!res.ok) throw new Error("Failed to mark complete");
+    addDialogueMsg(`Completed deadline #${id}.`, "bot");
+    speakText(`Completed deadline number ${id}.`);
     refreshAll();
   } catch (err) {
     alert("Error: " + err.message);
@@ -994,7 +1060,7 @@ async function completeItem(id) {
 async function reopenItem(id) {
   try {
     const res = await fetch(`/api/deadlines/${id}/reopen`, { method: "POST" });
-    if (!res.ok) throw new Error("Failed to reopen deadline");
+    if (!res.ok) throw new Error("Failed to reopen");
     addDialogueMsg(`Reopened deadline #${id}.`, "bot");
     refreshAll();
   } catch (err) {
@@ -1003,10 +1069,10 @@ async function reopenItem(id) {
 }
 
 async function deleteItem(id) {
-  if (!confirm(`Are you sure you want to permanently delete deadline #${id}?`)) return;
+  if (!confirm(`Delete deadline #${id}?`)) return;
   try {
     const res = await fetch(`/api/deadlines/${id}`, { method: "DELETE" });
-    if (!res.ok) throw new Error("Failed to delete deadline");
+    if (!res.ok) throw new Error("Failed to delete");
     addDialogueMsg(`Deleted deadline #${id}.`, "bot");
     refreshAll();
   } catch (err) {
@@ -1014,9 +1080,9 @@ async function deleteItem(id) {
   }
 }
 
-// Add & Edit Form Handlers
+// Form Handlers
 function openAddModal() {
-  document.getElementById("modalHeading").textContent = "Add Academic Deadline";
+  document.getElementById("modalHeading").textContent = "Add Deadline";
   document.getElementById("editId").value = "";
   document.getElementById("formCourse").value = "CS 301";
   document.getElementById("formTitle").value = "";
@@ -1057,7 +1123,7 @@ async function submitDeadlineForm() {
   const errEl = document.getElementById("formError");
 
   if (!course || !title || !due) {
-    errEl.textContent = "Course code, title, and due date are required.";
+    errEl.textContent = "Please fill in course code, title, and due date.";
     errEl.style.display = "block";
     return;
   }
@@ -1067,7 +1133,6 @@ async function submitDeadlineForm() {
 
   try {
     if (id) {
-      // Edit PUT
       const res = await fetch(`/api/deadlines/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -1076,11 +1141,10 @@ async function submitDeadlineForm() {
       if (!res.ok) throw new Error("Update failed");
       addDialogueMsg(`Updated ${title} (${course}).`, "bot");
     } else {
-      // Add via MCP tool invocation for full protocol verification
       await invokeMcpTool("tool_add_deadline", {
         title, course, due_at: due, weight_pct: weight
       });
-      addDialogueMsg(`Added: "${title}" (${course}) due ${due.replace('T', ' ')} (Weight: ${weight}%).`, "bot");
+      addDialogueMsg(`Added: "${title}" (${course}) due ${formatHumanDate(due)}.`, "bot");
       speakText(`Added ${title} for ${course} to your schedule.`);
     }
 
@@ -1094,7 +1158,7 @@ async function submitDeadlineForm() {
   }
 }
 
-// iCalendar (.ics) RFC 5545 Parser
+// iCalendar Import
 function handleIcsImport(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -1105,27 +1169,24 @@ function handleIcsImport(e) {
     const events = parseIcsString(text);
 
     if (!events.length) {
-      alert("No valid VEVENT calendar records found in this file.");
+      alert("No valid calendar records found in file.");
       return;
     }
 
-    if (confirm(`Detected ${events.length} assignments in "${file.name}". Import all into DueSignal via MCP?`)) {
-      addDialogueMsg(`Importing ${events.length} calendar events from "${file.name}"…`, "user");
+    if (confirm(`Import ${events.length} assignments from "${file.name}"?`)) {
+      addDialogueMsg(`Importing ${events.length} events from "${file.name}"…`, "user");
       let count = 0;
       for (const ev of events) {
         try {
           await invokeMcpTool("tool_add_deadline", {
-            title: ev.title,
-            course: ev.course,
-            due_at: ev.due_at,
-            weight_pct: ev.weight_pct
+            title: ev.title, course: ev.course, due_at: ev.due_at, weight_pct: ev.weight_pct
           });
           count++;
         } catch (err) {
-          console.warn("Event import skipped:", ev, err);
+          console.warn("Import skipped:", ev, err);
         }
       }
-      addDialogueMsg(`Successfully imported ${count} deadlines from your calendar!`, "bot");
+      addDialogueMsg(`Imported ${count} assignments into DueSignal.`, "bot");
       speakText(`Imported ${count} assignments into DueSignal.`);
       refreshAll();
     }
@@ -1176,20 +1237,20 @@ function parseIcsString(icsData) {
   return events;
 }
 
-// Alexa+ Dialogue Simulator
+// Chat Dialogue
 const chatBox = document.getElementById("chatBox");
 const chatInput = document.getElementById("chatInput");
 const sendBtn = document.getElementById("chatSendBtn");
 
 function addDialogueMsg(text, type) {
   const d = document.createElement("div");
-  d.className = `chat-msg ${type}`;
+  d.className = `chat-bubble ${type}`;
   d.textContent = text;
   chatBox.appendChild(d);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-async function triggerDialogue(prompt) {
+function triggerDialogue(prompt) {
   chatInput.value = prompt;
   sendBtn.click();
 }
@@ -1204,7 +1265,7 @@ sendBtn.onclick = async () => {
   try {
     const lower = text.toLowerCase();
 
-    // 1. Natural Language Priority Triage (Core intent)
+    // Priority ranking
     if (lower.includes("what should i") || lower.includes("priorit") || lower.includes("today") || lower.includes("first")) {
       const resp = await invokeMcpTool("tool_get_priority_ranking", {});
       let inner = resp.result ? (typeof resp.result === "string" ? JSON.parse(resp.result) : resp.result) : resp;
@@ -1214,29 +1275,28 @@ sendBtn.onclick = async () => {
 
       const ranked = inner.ranked || [];
       if (!ranked.length) {
-        const msg = "You currently have no pending deadlines recorded. Add an assignment to calculate priority rankings.";
+        const msg = "No pending deadlines recorded.";
         addDialogueMsg(msg, "bot");
         speakText(msg);
       } else {
         const top = ranked[0];
-        const lines = ranked.slice(0, 5).map((d, i) => {
+        const lines = ranked.slice(0, 4).map((d, i) => {
           const reason = d.bedrock_reason || d.deterministic_reason;
-          const statusPrefix = d.is_overdue ? "[OVERDUE] " : "";
-          return `${i + 1}. ${d.title} (${d.course}) ${statusPrefix}\n   Due: ${d.due_at.replace('T', ' ')} · ${reason}`;
+          const status = d.is_overdue ? "[OVERDUE] " : "";
+          return `${i + 1}. ${d.title} (${d.course}) ${status}\n   ${formatHumanDate(d.due_at)} · ${reason}`;
         });
 
-        const reply = "Top Academic Priorities:\n\n" + lines.join("\n\n");
-        addDialogueMsg(reply, "bot");
+        addDialogueMsg("Priority Ranking:\n\n" + lines.join("\n\n"), "bot");
 
-        const voiceSpoken = top.is_overdue
-          ? `Urgent attention: Your ${top.title} is overdue! You should address it right away.`
-          : `Based on urgency and grade weight, focus on ${top.title} for ${top.course} first.`;
-        speakText(voiceSpoken);
+        const voiceMsg = top.is_overdue
+          ? `Attention: Your ${top.title} is overdue!`
+          : `Focus on ${top.title} for ${top.course} first.`;
+        speakText(voiceMsg);
       }
       refreshAll();
     }
-    // 2. Add deadline via natural language
-    else if (lower.includes("add") && (lower.includes("due") || lower.includes("exam") || lower.includes("project") || lower.includes("lab"))) {
+    // Add deadline
+    else if (lower.includes("add") && (lower.includes("due") || lower.includes("exam") || lower.includes("project"))) {
       let title = "Assignment";
       let due = new Date(Date.now() + 86400000).toISOString().slice(0, 10) + "T23:59";
       let weight = 15;
@@ -1251,12 +1311,11 @@ sendBtn.onclick = async () => {
         title, course: "CS", due_at: due, weight_pct: weight
       });
 
-      const reply = `Saved deadline: "${title}" due ${due.replace('T', ' ')} (Weight: ${weight}%).`;
-      addDialogueMsg(reply, "bot");
+      addDialogueMsg(`Saved "${title}" due ${formatHumanDate(due)} (${weight}%).`, "bot");
       speakText(`Added ${title} to your schedule.`);
       refreshAll();
     }
-    // 3. List deadlines
+    // List deadlines
     else {
       const resp = await invokeMcpTool("tool_list_deadlines", { window_days: 14 });
       let inner = resp.result ? (typeof resp.result === "string" ? JSON.parse(resp.result) : resp.result) : resp;
@@ -1265,9 +1324,9 @@ sendBtn.onclick = async () => {
       }
       const list = inner.deadlines || [];
       if (!list.length) {
-        addDialogueMsg("No pending deadlines in the next 14 days.", "bot");
+        addDialogueMsg("No pending deadlines approaching in the next 14 days.", "bot");
       } else {
-        const textLines = list.map((d, i) => `${i + 1}. ${d.title} (${d.course}) — due ${d.due_at.replace('T', ' ')}`);
+        const textLines = list.map((d, i) => `${i + 1}. ${d.title} (${d.course}) — ${formatHumanDate(d.due_at)}`);
         addDialogueMsg("Upcoming in next 14 days:\n\n" + textLines.join("\n"), "bot");
         speakText(`You have ${list.length} deadlines approaching.`);
       }
@@ -1285,7 +1344,7 @@ chatInput.addEventListener("keydown", e => {
   if (e.key === "Enter") sendBtn.click();
 });
 
-// Speech Recognition
+// Mic
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
   const rec = new SpeechRec();
@@ -1320,7 +1379,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 }
 
 // Initial Boot
-addDialogueMsg("DueSignal MCP server connected. Ask 'What should I do today?' to evaluate your highest priority deadlines.", "bot");
+addDialogueMsg("DueSignal connected. Ask 'What should I do today?' to prioritize your deadlines.", "bot");
 refreshAll();
 </script>
 </body>
