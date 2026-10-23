@@ -77,5 +77,18 @@
   POST /mcp HTTP/1.1 403 Forbidden
   ```
 - **Severity:** High
-- **Workaround:** Configured `transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=False)` in `mcp.streamable_http_app(...)` and added `CORSMiddleware` to Starlette.
+- **Workaround:** Configured `transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=False)` in `mcp.streamable_http_app(...)` and added `CORSMiddleware` to Starlette. Also mounted `web_client/index.html` directly at `GET /` and `GET /index.html` on the server so the browser client runs on the same origin.
 - **Suggestion:** Mention in tutorials that local HTML files opened via `file://` send `Origin: null`, which triggers default localhost security filters unless DNS rebinding checks are configured.
+
+## Entry 7: Windows Socket Binding Conflict [Errno 10048] on Server Restart
+- **Task:** Restarting `mcp_server.server` on port 8000 after automated verification.
+- **Command / steps:** `python -m mcp_server.server`
+- **Expected:** Uvicorn binds to `127.0.0.1:8000` and starts accepting requests.
+- **Actual:**
+  ```
+  ERROR: [Errno 10048] error while attempting to bind on address ('127.0.0.1', 8000): only one usage of each socket address (protocol/network address/port) is normally permitted
+  ```
+- **Severity:** High
+- **Workaround:** Implemented automated background process cleanup using `Get-NetTCPConnection` / task manager termination before launching new daemon instance, ensuring port 8000 is fully released.
+- **Suggestion:** Provide an automated startup script or port health check (`run_server.bat` / `run_server.ps1`) that detects existing processes on the designated port and frees or reuses them safely.
+

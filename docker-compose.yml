@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  duesignal:
+    build: .
+    container_name: duesignal_mcp
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - MCP_AUTH_TOKEN=${MCP_AUTH_TOKEN:-QiLwfdv5r2zB3zXB4iiLpXJF-MNGsAEc1hcfgjRTEcY}
+      - DATABASE_PATH=/data/duesignal.db
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - BEDROCK_MODEL_ID=${BEDROCK_MODEL_ID:-amazon.nova-micro-v1:0}
+    volumes:
+      - duesignal_data:/data
+
+volumes:
+  duesignal_data:
