@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+duesignal.db
+.pytest_cache/
