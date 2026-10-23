@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DueSignal · Alexa+ Production MCP Deadline Triage</title>
+<title>DueSignal · Alexa+ Academic Deadline Triage</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -16,14 +16,13 @@
     --border-glow: rgba(0, 202, 224, 0.4);
     --alexa-cyan: #00cae0;
     --alexa-blue: #0073e6;
-    --alexa-glow: 0 0 28px rgba(0, 202, 224, 0.5);
+    --alexa-glow: 0 0 28px rgba(0, 202, 224, 0.45);
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
     --success: #10b981;
     --warning: #f59e0b;
     --danger: #ef4444;
-    --purple: #a855f7;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -190,62 +189,92 @@
     color: var(--alexa-cyan);
   }
 
-  /* Judge Showcase Toolbar */
-  .judge-bar {
-    background: linear-gradient(90deg, rgba(16, 24, 48, 0.9) 0%, rgba(20, 30, 60, 0.9) 100%);
-    border: 1px solid rgba(0, 202, 224, 0.3);
+  /* Student Action Toolbar */
+  .action-bar {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border-subtle);
     border-radius: 14px;
-    padding: 0.75rem 1.25rem;
+    padding: 0.85rem 1.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 0.75rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   }
 
-  .judge-title {
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--alexa-cyan);
+  .action-left {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-  }
-
-  .demo-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    gap: 0.65rem;
     flex-wrap: wrap;
   }
 
-  .demo-btn {
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.35rem 0.8rem;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-primary);
+  .btn-primary {
+    background: linear-gradient(135deg, var(--alexa-cyan) 0%, var(--alexa-blue) 100%);
+    color: #030712;
+    font-weight: 700;
+    border: none;
+    border-radius: 9px;
+    padding: 0.45rem 0.9rem;
     cursor: pointer;
-    transition: all 0.2s;
+    font-size: 0.8rem;
     display: flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.4rem;
+    transition: all 0.2s;
   }
 
-  .demo-btn:hover {
-    background: rgba(0, 202, 224, 0.2);
-    border-color: var(--alexa-cyan);
+  .btn-primary:hover {
+    box-shadow: var(--alexa-glow);
     transform: translateY(-1px);
   }
 
-  .demo-btn.danger:hover {
-    background: rgba(239, 68, 68, 0.2);
-    border-color: var(--danger);
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    font-weight: 600;
+    border-radius: 9px;
+    padding: 0.45rem 0.85rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 0.35rem;
+    background: #070b14;
+    padding: 0.25rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-subtle);
+  }
+
+  .filter-tab {
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    border-radius: 7px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-tab.active {
+    background: rgba(0, 202, 224, 0.18);
+    color: var(--alexa-cyan);
   }
 
   /* Main Grid */
@@ -417,7 +446,7 @@
     cursor: not-allowed;
   }
 
-  /* Deadlines Card Column */
+  /* Deadlines Column */
   .deadline-list {
     display: flex;
     flex-direction: column;
@@ -538,37 +567,7 @@
     color: #fff;
   }
 
-  /* Protocol Inspector & Telemetry HUD */
-  .telemetry-hud {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-    background: #040711;
-    border: 1px solid var(--border-subtle);
-    border-radius: 10px;
-    padding: 0.6rem 0.85rem;
-  }
-
-  .tele-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-  }
-
-  .tele-label {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    font-weight: 600;
-  }
-
-  .tele-val {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--alexa-cyan);
-    font-weight: 600;
-  }
-
+  /* Protocol Inspector */
   #raw {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
@@ -582,7 +581,7 @@
     overflow-y: auto;
   }
 
-  /* Token Modal */
+  /* Modals */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -601,9 +600,38 @@
     border: 1px solid var(--border-subtle);
     border-radius: 16px;
     padding: 1.5rem;
-    max-width: 440px;
+    max-width: 480px;
     width: 90%;
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .form-group label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .form-group input, .form-group select {
+    background: #070c17;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 0.65rem 0.85rem;
+    color: #fff;
+    font-size: 0.85rem;
+    outline: none;
+  }
+
+  .form-group input:focus {
+    border-color: var(--alexa-cyan);
   }
 </style>
 </head>
@@ -623,22 +651,38 @@
       </div>
     </div>
     <div class="header-actions">
-      <span class="badge live"><span class="badge-dot"></span> MCP Streamable HTTP</span>
-      <button id="earconToggle" class="icon-btn active" title="Alexa Audio Earcon Chimes (Web Audio API)">🔔</button>
+      <span class="badge live"><span class="badge-dot"></span> Streamable HTTP</span>
+      <button id="earconToggle" class="icon-btn active" title="Alexa Audio Earcon Chimes">🔔</button>
       <button id="ttsToggle" class="icon-btn active" title="Toggle Alexa Speech Output">🔊</button>
       <button id="tokenConfigBtn" class="icon-btn" title="Configure Auth Token">🔑</button>
     </div>
   </header>
 
-  <!-- Senior Judge Showcase Bar -->
-  <div class="judge-bar">
-    <div class="judge-title">
-      <span>⚡ Senior Evaluator Demo Scenarios</span>
+  <!-- Real User Productivity Action Bar -->
+  <div class="action-bar">
+    <div class="action-left">
+      <button class="btn-primary" onclick="openAddModal()">
+        <span>➕</span>
+        <span>Add Deadline</span>
+      </button>
+
+      <button class="btn-secondary" onclick="document.getElementById('icsFileInput').click()">
+        <span>📅</span>
+        <span>Import Calendar (.ics)</span>
+      </button>
+      <input type="file" id="icsFileInput" accept=".ics,text/calendar" style="display:none" onchange="handleIcsUpload(event)">
+
+      <button class="btn-secondary" onclick="clearAllData()">
+        <span>🧹</span>
+        <span>Clear All</span>
+      </button>
     </div>
-    <div class="demo-actions">
-      <button class="demo-btn" onclick="seedDemo('finals_crisis')">🚨 Load Finals Week Crisis</button>
-      <button class="demo-btn" onclick="seedDemo('midterms')">🎓 Load Midterm Season</button>
-      <button class="demo-btn danger" onclick="seedDemo('clear')">🧹 Clear DB</button>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="setFilter('all', this)">All Deadlines</button>
+      <button class="filter-tab" onclick="setFilter('week', this)">Next 7 Days</button>
+      <button class="filter-tab" onclick="setFilter('urgent', this)">Urgent & Overdue</button>
     </div>
   </div>
 
@@ -655,7 +699,7 @@
 
       <div class="quick-chips">
         <span class="chip" onclick="quickSend('Alexa, what should I study tonight?')">⚡ What should I study tonight?</span>
-        <span class="chip" onclick="quickSend('Add OS project due 2026-10-25T23:59 worth 25%')">➕ Add OS Lab (25%)</span>
+        <span class="chip" onclick="quickSend('Add CS301 OS project due 2026-10-25T23:59 worth 25%')">➕ Add OS Lab (25%)</span>
         <span class="chip" onclick="quickSend('List all deadlines')">📋 List deadlines</span>
       </div>
 
@@ -665,38 +709,21 @@
         <button id="send">Send</button>
       </div>
 
-      <!-- Real-Time Observability HUD -->
       <div class="card-header" style="margin-top:0.4rem">
-        <span style="font-size:0.78rem; font-weight:700; color:var(--text-secondary)">📊 Live Server Telemetry & Latency</span>
-        <span id="latencyPill" style="font-size:0.7rem; color:var(--success); font-family:'JetBrains Mono'">~0.0 ms</span>
-      </div>
-      <div class="telemetry-hud">
-        <div class="tele-item">
-          <span class="tele-label">P50 Latency</span>
-          <span id="teleP50" class="tele-val">2.8 ms</span>
-        </div>
-        <div class="tele-item">
-          <span class="tele-label">MCP RPCs</span>
-          <span id="teleRPCs" class="tele-val">0</span>
-        </div>
-        <div class="tele-item">
-          <span class="tele-label">Bedrock Engine</span>
-          <span id="teleBedrock" class="tele-val">Strands</span>
-        </div>
-      </div>
-
-      <div class="card-header" style="margin-top:0.2rem">
         <span style="font-size:0.75rem; color:var(--text-muted)">Streamable HTTP JSON-RPC 2.0 Trace</span>
         <span style="font-size:0.7rem; color:var(--alexa-cyan)">POST /mcp</span>
       </div>
-      <div id="raw">Connecting to DueSignal MCP stream...</div>
+      <div id="raw">Connected to DueSignal MCP stream.</div>
     </div>
 
     <!-- Active Deadlines Column -->
     <div class="card">
       <div class="card-header">
         <span class="card-title">📚 Active Academic Deadlines</span>
-        <button class="chip" onclick="refreshDeadlines()" style="margin:0">🔄 Refresh</button>
+        <div style="display:flex; gap:0.5rem; align-items:center">
+          <span id="deadlineCount" style="font-size:0.75rem; color:var(--alexa-cyan); font-weight:600">0 tasks</span>
+          <button class="chip" onclick="refreshDeadlines()" style="margin:0">🔄 Refresh</button>
+        </div>
       </div>
       <div id="deadlinesList" class="deadline-list">
         <div style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:2rem 0">
@@ -707,17 +734,52 @@
   </div>
 </div>
 
+<!-- Add Deadline Modal -->
+<div id="addModal" class="modal-overlay">
+  <div class="modal">
+    <div style="display:flex; justify-content:space-between; align-items:center">
+      <h3 style="color:#fff; font-size:1.05rem">Add New Academic Deadline</h3>
+      <button onclick="closeAddModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.2rem">&times;</button>
+    </div>
+
+    <div class="form-group">
+      <label>Course Code</label>
+      <input type="text" id="mCourse" placeholder="e.g. CS 301, MATH 201" value="CS 301" />
+    </div>
+
+    <div class="form-group">
+      <label>Assignment / Exam Title</label>
+      <input type="text" id="mTitle" placeholder="e.g. Operating Systems Lab 3" />
+    </div>
+
+    <div class="form-group">
+      <label>Due Date & Time</label>
+      <input type="datetime-local" id="mDueDate" />
+    </div>
+
+    <div class="form-group">
+      <label>Grade Weight: <span id="weightVal" style="color:var(--alexa-cyan)">20%</span></label>
+      <input type="range" id="mWeight" min="0" max="60" value="20" oninput="document.getElementById('weightVal').textContent = this.value + '%'" />
+    </div>
+
+    <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.5rem">
+      <button class="btn-secondary" onclick="closeAddModal()">Cancel</button>
+      <button class="btn-primary" onclick="submitNewDeadline()">Save via MCP</button>
+    </div>
+  </div>
+</div>
+
 <!-- Token Modal -->
 <div id="tokenModal" class="modal-overlay">
   <div class="modal">
     <h3 style="color:#fff; margin-bottom:0.5rem">Configure MCP Bearer Token</h3>
-    <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem">
+    <p style="font-size:0.82rem; color:var(--text-muted)">
       Saved to browser storage and attached to all <code>POST /mcp</code> headers.
     </p>
-    <input id="tokenInput" type="text" style="width:100%; padding:0.65rem; border-radius:8px; border:1px solid #334155; background:#020617; color:#fff; font-family:'JetBrains Mono', monospace; font-size:0.8rem; margin-bottom:1rem;" />
-    <div style="display:flex; justify-content:flex-end; gap:0.5rem">
-      <button class="chip" onclick="closeTokenModal()">Cancel</button>
-      <button id="saveTokenBtn" class="chip" style="background:var(--alexa-cyan); color:#000; font-weight:700">Save Token</button>
+    <input id="tokenInput" type="text" style="width:100%; padding:0.65rem; border-radius:8px; border:1px solid #334155; background:#020617; color:#fff; font-family:'JetBrains Mono', monospace; font-size:0.8rem;" />
+    <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.5rem">
+      <button class="btn-secondary" onclick="closeTokenModal()">Cancel</button>
+      <button id="saveTokenBtn" class="btn-primary">Save Token</button>
     </div>
   </div>
 </div>
@@ -745,19 +807,17 @@ let reqId = 1;
 let ttsEnabled = true;
 let earconEnabled = true;
 let audioCtx = null;
+let currentFilter = 'all';
+let allDeadlinesCache = [];
 
-// Audio Context Lazy Initialization
+// Audio Context
 function getAudioContext() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
   return audioCtx;
 }
 
-// Alexa Audio Earcon Chimes (Web Audio API)
+// Alexa Audio Earcon Chimes
 function playAlexaChime(type = "listen") {
   if (!earconEnabled) return;
   try {
@@ -771,7 +831,6 @@ function playAlexaChime(type = "listen") {
     gain.connect(ctx.destination);
 
     if (type === "listen") {
-      // 660 Hz -> 880 Hz upward chime
       osc.frequency.setValueAtTime(660, now);
       osc.frequency.exponentialRampToValueAtTime(880, now + 0.12);
       gain.gain.setValueAtTime(0.01, now);
@@ -780,7 +839,6 @@ function playAlexaChime(type = "listen") {
       osc.start(now);
       osc.stop(now + 0.35);
     } else {
-      // 880 Hz -> 660 Hz completion chime
       osc.frequency.setValueAtTime(880, now);
       osc.frequency.exponentialRampToValueAtTime(660, now + 0.14);
       gain.gain.setValueAtTime(0.01, now);
@@ -820,6 +878,143 @@ document.getElementById("saveTokenBtn").onclick = () => {
   addMsg("MCP Authorization Token updated.", "bot");
   refreshDeadlines();
 };
+
+// Add Deadline Modal
+const addModal = document.getElementById("addModal");
+function openAddModal() {
+  const tomorrow = new Date(Date.now() + 86400000);
+  document.getElementById("mDueDate").value = tomorrow.toISOString().slice(0, 16);
+  addModal.classList.add("open");
+  document.getElementById("mTitle").focus();
+}
+function closeAddModal() { addModal.classList.remove("open"); }
+
+async function submitNewDeadline() {
+  const course = document.getElementById("mCourse").value.trim() || "Course";
+  const title = document.getElementById("mTitle").value.trim();
+  const due = document.getElementById("mDueDate").value;
+  const weight = parseFloat(document.getElementById("mWeight").value) || 0;
+
+  if (!title || !due) {
+    alert("Please enter both an assignment title and due date.");
+    return;
+  }
+
+  closeAddModal();
+  addMsg(`Adding ${title} (${course})...`, "user");
+  try {
+    await callTool("tool_add_deadline", {
+      title: title,
+      course: course,
+      due_at: due,
+      weight_pct: weight
+    });
+    addMsg(`Successfully saved: ${title} (${course}) due ${due} (weight: ${weight}%).`, "bot");
+    speak(`I've added ${title} for ${course} to your schedule.`);
+    refreshDeadlines();
+  } catch (err) {
+    addMsg("Error adding deadline: " + err.message, "err");
+  }
+}
+
+// iCalendar (.ics) File Parser & Importer
+function handleIcsUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async (event) => {
+    const text = event.target.result;
+    const events = parseIcsString(text);
+    if (!events.length) {
+      alert("No valid VEVENT entries found in this calendar file.");
+      return;
+    }
+
+    if (confirm(`Found ${events.length} deadlines in "${file.name}". Import all into DueSignal?`)) {
+      addMsg(`Importing ${events.length} deadlines from "${file.name}"...`, "user");
+      let added = 0;
+      for (const ev of events) {
+        try {
+          await callTool("tool_add_deadline", {
+            title: ev.title,
+            course: ev.course,
+            due_at: ev.due_at,
+            weight_pct: ev.weight_pct
+          });
+          added++;
+        } catch (err) {
+          console.warn("Failed to add event:", ev, err);
+        }
+      }
+      addMsg(`Imported ${added} assignments into DueSignal from your calendar!`, "bot");
+      speak(`Imported ${added} assignments into DueSignal.`);
+      refreshDeadlines();
+    }
+  };
+  reader.readAsText(file);
+}
+
+function parseIcsString(icsData) {
+  const lines = icsData.split(/\r\n|\n|\r/);
+  const events = [];
+  let inEvent = false;
+  let curEvent = {};
+
+  for (let line of lines) {
+    if (line.startsWith("BEGIN:VEVENT")) {
+      inEvent = true;
+      curEvent = {};
+    } else if (line.startsWith("END:VEVENT")) {
+      if (curEvent.title && curEvent.due_at) {
+        events.push(curEvent);
+      }
+      inEvent = false;
+    } else if (inEvent) {
+      if (line.startsWith("SUMMARY:")) {
+        const full = line.replace("SUMMARY:", "").trim();
+        const courseMatch = full.match(/^([A-Z]{2,4}\s*\d{3}[A-Z]?)\s*[:-]\s*(.+)$/i);
+        if (courseMatch) {
+          curEvent.course = courseMatch[1].toUpperCase();
+          curEvent.title = courseMatch[2];
+        } else {
+          curEvent.course = "Course";
+          curEvent.title = full;
+        }
+        curEvent.weight_pct = 15;
+      } else if (line.startsWith("DTEND") || line.startsWith("DTSTART")) {
+        if (!curEvent.due_at) {
+          const val = line.split(":")[1];
+          if (val && val.length >= 8) {
+            const yr = val.slice(0, 4);
+            const mo = val.slice(4, 6);
+            const da = val.slice(6, 8);
+            const hr = val.length >= 13 ? val.slice(9, 11) : "23";
+            const mn = val.length >= 13 ? val.slice(11, 13) : "59";
+            curEvent.due_at = `${yr}-${mo}-${da}T${hr}:${mn}`;
+          }
+        }
+      }
+    }
+  }
+  return events;
+}
+
+async function clearAllData() {
+  if (!confirm("Are you sure you want to clear all deadlines?")) return;
+  try {
+    const res = await fetch("/api/demo/seed", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ scenario: "clear" })
+    });
+    addMsg("All deadlines cleared from database.", "bot");
+    speak("All deadlines have been cleared.");
+    refreshDeadlines();
+  } catch (err) {
+    addMsg("Error clearing: " + err.message, "err");
+  }
+}
 
 function speak(text) {
   if (!ttsEnabled || !window.speechSynthesis) return;
@@ -871,71 +1066,61 @@ async function callTool(name, args) {
   const text = await res.text();
   raw.textContent += "\n← HTTP " + res.status + " (" + duration + "ms)\n" + text;
 
-  // Update HUD
-  document.getElementById("latencyPill").textContent = `${duration} ms`;
-  document.getElementById("teleRPCs").textContent = reqId - 1;
-  document.getElementById("teleP50").textContent = `${duration} ms`;
-
   if (!res.ok) throw new Error("HTTP " + res.status + ": " + text);
   return parseMcpResponse(text);
 }
 
-// Senior Judge Scenario Seeder
-async function seedDemo(scenario) {
-  try {
-    addMsg(`Loading demo scenario: "${scenario}" ...`, "user");
-    const res = await fetch("/api/demo/seed", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ scenario })
-    });
-    const data = await res.json();
-    if (scenario === "clear") {
-      addMsg("Database cleared. Zero deadlines pending.", "bot");
-      speak("Database cleared. All deadlines have been removed.");
-    } else {
-      addMsg(`Loaded ${data.count} deadlines for scenario: ${scenario}. Running triage priority ranking now...`, "bot");
-      speak(`Loaded scenario: ${scenario}. Prioritizing your deadlines now.`);
-      quickSend("Alexa, what should I study tonight?");
-    }
-    refreshDeadlines();
-  } catch (err) {
-    addMsg("Error seeding demo: " + err.message, "err");
+function setFilter(type, btn) {
+  currentFilter = type;
+  document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
+  btn.classList.add("active");
+  renderDeadlines();
+}
+
+function renderDeadlines() {
+  let list = [...allDeadlinesCache];
+  if (currentFilter === 'week') {
+    list = list.filter(d => !d.is_overdue && d.hours_remaining <= 168);
+  } else if (currentFilter === 'urgent') {
+    list = list.filter(d => d.is_overdue || d.urgency_band === "CRITICAL" || d.urgency_band === "HIGH");
   }
+
+  document.getElementById("deadlineCount").textContent = `${list.length} task${list.length === 1 ? '' : 's'}`;
+
+  if (!list.length) {
+    deadlinesList.innerHTML = `<div style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:2rem 0">No deadlines match current view.<br><small style="color:var(--alexa-cyan)">Click "+ Add Deadline" or import an .ics file above!</small></div>`;
+    return;
+  }
+
+  deadlinesList.innerHTML = list.map(d => {
+    const isOverdue = d.is_overdue || (d.urgency_band === "OVERDUE");
+    const cardCls = isOverdue ? "deadline-card overdue" : (d.urgency_band === "CRITICAL" ? "deadline-card critical" : "deadline-card");
+    const band = d.urgency_band || "UPCOMING";
+
+    return `
+      <div class="${cardCls}">
+        <div class="deadline-top">
+          <span class="deadline-title">${d.title}</span>
+          <div style="display:flex; gap:0.4rem; align-items:center">
+            <span class="urgency-pill ${band}">${band}</span>
+            <span class="course-badge">${d.course}</span>
+          </div>
+        </div>
+        <div class="deadline-meta">
+          <span>📅 ${d.due_at} · ⚖️ ${d.weight_pct}% · Score: ${d.score}</span>
+          <button class="btn-complete" onclick="markDone(${d.id})">✓ Done</button>
+        </div>
+      </div>
+    `;
+  }).join("");
 }
 
 async function refreshDeadlines() {
   try {
     const res = await fetch("/api/deadlines");
     const data = await res.json();
-    const list = data.deadlines || [];
-
-    if (!list.length) {
-      deadlinesList.innerHTML = `<div style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:2rem 0">No pending deadlines recorded.<br><small style="color:var(--alexa-cyan)">Use the Demo toolbar above to load test data!</small></div>`;
-      return;
-    }
-
-    deadlinesList.innerHTML = list.map(d => {
-      const isOverdue = d.is_overdue || (d.urgency_band === "OVERDUE");
-      const cardCls = isOverdue ? "deadline-card overdue" : (d.urgency_band === "CRITICAL" ? "deadline-card critical" : "deadline-card");
-      const band = d.urgency_band || "UPCOMING";
-
-      return `
-        <div class="${cardCls}">
-          <div class="deadline-top">
-            <span class="deadline-title">${d.title}</span>
-            <div style="display:flex; gap:0.4rem; align-items:center">
-              <span class="urgency-pill ${band}">${band}</span>
-              <span class="course-badge">${d.course}</span>
-            </div>
-          </div>
-          <div class="deadline-meta">
-            <span>📅 ${d.due_at} · ⚖️ ${d.weight_pct}% · Score: ${d.score}</span>
-            <button class="btn-complete" onclick="markDone(${d.id})">✓ Done</button>
-          </div>
-        </div>
-      `;
-    }).join("");
+    allDeadlinesCache = data.deadlines || [];
+    renderDeadlines();
   } catch (err) {
     deadlinesList.innerHTML = `<div style="font-size:0.82rem; color:var(--danger); padding:1rem">Could not load deadlines: ${err.message}</div>`;
   }
@@ -945,8 +1130,8 @@ async function markDone(id) {
   try {
     addMsg(`Marking deadline #${id} complete...`, "user");
     await callTool("tool_mark_complete", { id: parseInt(id) });
-    addMsg(`Completed deadline #${id}. Great progress!`, "bot");
-    speak(`Completed deadline number ${id}. Great progress!`);
+    addMsg(`Completed deadline #${id}. Great job!`, "bot");
+    speak(`Completed deadline number ${id}. Great job!`);
     refreshDeadlines();
   } catch (err) {
     addMsg(`Error: ${err.message}`, "err");
@@ -982,7 +1167,7 @@ async function handle(userText) {
       const weightMatch = userText.match(/worth\s+(\d+)/i) || userText.match(/(\d+)%/);
       if (weightMatch) weight = parseFloat(weightMatch[1]);
 
-      const r = await callTool("tool_add_deadline", {
+      await callTool("tool_add_deadline", {
         title: title,
         course: "CS",
         due_at: dueAt,
@@ -1029,7 +1214,7 @@ async function handle(userText) {
       }
       const ranked = inner.ranked || [];
       if (!ranked.length) {
-        const emptyMsg = "You currently have no pending deadlines. Load a demo scenario to see priority triage in action!";
+        const emptyMsg = "You currently have no pending deadlines. Click '+ Add Deadline' above to get started!";
         addMsg(emptyMsg, "bot");
         speak(emptyMsg);
       } else {
@@ -1116,7 +1301,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 }
 
 // Initial load
-addMsg("Hi! I'm DueSignal, your Alexa+ deadline triage assistant. Click 'Load Finals Week Crisis' above or ask 'What should I study tonight?'", "bot");
+addMsg("Hi! I'm DueSignal, your Alexa+ deadline triage assistant. You can add assignments using the button above, import an .ics calendar file, or ask 'What should I study tonight?'", "bot");
 refreshDeadlines();
 </script>
 </body>

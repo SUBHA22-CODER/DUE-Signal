@@ -1,0 +1,33 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//DueSignal//Academic Deadlines Demo//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+SUMMARY:CS 301 - Operating Systems Kernel Project
+DTSTART:20261025T140000Z
+DTEND:20261025T235900Z
+DESCRIPTION:Phase 2 virtual memory manager implementation (worth 25% of final grade).
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:MATH 201 - Linear Algebra Midterm Exam
+DTSTART:20261026T180000Z
+DTEND:20261026T200000Z
+DESCRIPTION:Chapters 4-7 eigenvalues, eigenvectors, and singular value decomposition (worth 30%).
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:CS 229 - Machine Learning Problem Set 3
+DTSTART:20261028T120000Z
+DTEND:20261028T235900Z
+DESCRIPTION:SVM dual formulation and kernel ridge regression (worth 15%).
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:ENG 105 - Technical Communication Essay
+DTSTART:20261102T090000Z
+DTEND:20261102T170000Z
+DESCRIPTION:Draft review of peer technical specifications (worth 10%).
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR
