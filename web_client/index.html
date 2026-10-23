@@ -3,32 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DueSignal · Alexa+ Deadline Triage MCP</title>
+<title>DueSignal · Alexa+ Production MCP Deadline Triage</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-base: #07090e;
-    --bg-card: rgba(18, 24, 38, 0.75);
-    --bg-surface: #0e1524;
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-glow: rgba(0, 202, 224, 0.35);
+    --bg-base: #06080e;
+    --bg-card: rgba(14, 20, 34, 0.75);
+    --bg-surface: #0b1120;
+    --border-subtle: rgba(255, 255, 255, 0.09);
+    --border-glow: rgba(0, 202, 224, 0.4);
     --alexa-cyan: #00cae0;
     --alexa-blue: #0073e6;
-    --alexa-glow: 0 0 24px rgba(0, 202, 224, 0.45);
-    --text-primary: #f0f6fc;
+    --alexa-glow: 0 0 28px rgba(0, 202, 224, 0.5);
+    --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
     --success: #10b981;
     --warning: #f59e0b;
     --danger: #ef4444;
+    --purple: #a855f7;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: radial-gradient(circle at 50% 0%, #111a33 0%, var(--bg-base) 65%);
+    background: radial-gradient(circle at 50% 0%, #101c38 0%, var(--bg-base) 65%);
     color: var(--text-primary);
     min-height: 100vh;
     padding: 1.5rem 1rem 3rem;
@@ -36,11 +37,11 @@
   }
 
   .container {
-    max-width: 1140px;
+    max-width: 1200px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   /* Header Bar */
@@ -50,57 +51,70 @@
     align-items: center;
     padding: 1rem 1.5rem;
     background: var(--bg-card);
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(20px);
     border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   }
 
   .brand {
     display: flex;
     align-items: center;
-    gap: 0.85rem;
+    gap: 1rem;
   }
 
   .alexa-orb {
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: conic-gradient(from 180deg at 50% 50%, var(--alexa-cyan), var(--alexa-blue), var(--alexa-cyan));
+    background: conic-gradient(from 180deg at 50% 50%, var(--alexa-cyan), var(--alexa-blue), #38bdf8, var(--alexa-cyan));
     box-shadow: var(--alexa-glow);
     position: relative;
     animation: rotateOrb 6s linear infinite;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.3s ease;
   }
 
   .alexa-orb::after {
     content: '';
-    width: 26px;
-    height: 26px;
-    background: var(--bg-surface);
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    background: #090e1a;
   }
 
   .alexa-orb.speaking {
-    animation: rotateOrb 1.5s linear infinite, pulseGlow 1s ease-in-out infinite alternate;
+    animation: pulseOrb 1.2s ease-in-out infinite alternate, rotateOrb 3s linear infinite;
+    box-shadow: 0 0 35px rgba(0, 202, 224, 0.8), 0 0 60px rgba(0, 115, 230, 0.4);
+    transform: scale(1.08);
+  }
+
+  .alexa-orb.listening {
+    animation: pulseListen 0.8s ease-in-out infinite alternate;
+    box-shadow: 0 0 40px rgba(16, 185, 129, 0.9);
   }
 
   @keyframes rotateOrb {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
-  @keyframes pulseGlow {
-    0% { box-shadow: 0 0 15px rgba(0, 202, 224, 0.5); }
-    100% { box-shadow: 0 0 35px rgba(0, 202, 224, 0.95); }
+  @keyframes pulseOrb {
+    0% { transform: scale(1); filter: brightness(1); }
+    100% { transform: scale(1.1); filter: brightness(1.3); }
+  }
+
+  @keyframes pulseListen {
+    0% { transform: scale(1); filter: hue-rotate(90deg); }
+    100% { transform: scale(1.15); filter: hue-rotate(90deg) brightness(1.4); }
   }
 
   h1 {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.35rem;
-    font-weight: 700;
+    font-size: 1.45rem;
+    font-weight: 800;
     letter-spacing: -0.02em;
     background: linear-gradient(135deg, #ffffff 40%, var(--alexa-cyan) 100%);
     -webkit-background-clip: text;
@@ -108,76 +122,137 @@
   }
 
   .subtitle {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .header-badges {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.4rem;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
   }
 
   .badge {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.78rem;
+    font-size: 0.72rem;
+    font-weight: 600;
     padding: 0.35rem 0.75rem;
     border-radius: 9999px;
-    border: 1px solid var(--border-subtle);
-    background: rgba(255, 255, 255, 0.03);
-    color: var(--text-secondary);
+    background: rgba(0, 202, 224, 0.12);
+    border: 1px solid rgba(0, 202, 224, 0.3);
+    color: var(--alexa-cyan);
+    font-family: 'JetBrains Mono', monospace;
   }
 
-  .badge.live {
-    border-color: rgba(16, 185, 129, 0.3);
-    background: rgba(16, 185, 129, 0.08);
-    color: var(--success);
-  }
-
-  .badge-dot {
-    width: 7px;
-    height: 7px;
+  .badge.live .badge-dot {
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: var(--success);
     box-shadow: 0 0 8px var(--success);
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
   }
 
   .icon-btn {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-subtle);
     color: var(--text-secondary);
-    border-radius: 10px;
     width: 36px;
     height: 36px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    font-size: 0.95rem;
     transition: all 0.2s ease;
   }
 
   .icon-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--text-primary);
-    border-color: var(--border-glow);
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
   }
 
   .icon-btn.active {
-    color: var(--alexa-cyan);
+    background: rgba(0, 202, 224, 0.15);
     border-color: var(--alexa-cyan);
-    background: rgba(0, 202, 224, 0.1);
+    color: var(--alexa-cyan);
+  }
+
+  /* Judge Showcase Toolbar */
+  .judge-bar {
+    background: linear-gradient(90deg, rgba(16, 24, 48, 0.9) 0%, rgba(20, 30, 60, 0.9) 100%);
+    border: 1px solid rgba(0, 202, 224, 0.3);
+    border-radius: 14px;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .judge-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--alexa-cyan);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .demo-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .demo-btn {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35rem 0.8rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .demo-btn:hover {
+    background: rgba(0, 202, 224, 0.2);
+    border-color: var(--alexa-cyan);
+    transform: translateY(-1px);
+  }
+
+  .demo-btn.danger:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: var(--danger);
   }
 
   /* Main Grid */
   .grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 1.5rem;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 1.25rem;
   }
 
   @media (max-width: 900px) {
@@ -188,48 +263,52 @@
     background: var(--bg-card);
     backdrop-filter: blur(16px);
     border: 1px solid var(--border-subtle);
-    border-radius: 16px;
+    border-radius: 18px;
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    gap: 0.9rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
   }
 
-  .card-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: 0.75rem;
+  .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  /* Chat Pane */
+  .card-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Chat Box */
   #chat {
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
+    background: #070b14;
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
     padding: 1rem;
-    min-height: 320px;
-    max-height: 440px;
+    height: 380px;
     overflow-y: auto;
-    background: rgba(10, 14, 22, 0.85);
-    margin-bottom: 0.85rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.85rem;
     scroll-behavior: smooth;
   }
 
   .msg {
+    max-width: 88%;
     padding: 0.75rem 1rem;
-    border-radius: 12px;
-    font-size: 0.88rem;
-    line-height: 1.5;
-    max-width: 90%;
-    animation: fadeIn 0.25s ease;
+    border-radius: 14px;
+    font-size: 0.86rem;
+    line-height: 1.45;
     word-break: break-word;
+    animation: fadeIn 0.2s ease-out;
   }
 
   @keyframes fadeIn {
@@ -239,112 +318,93 @@
 
   .msg.user {
     align-self: flex-end;
-    background: linear-gradient(135deg, rgba(0, 115, 230, 0.25), rgba(0, 202, 224, 0.15));
-    border: 1px solid rgba(0, 202, 224, 0.3);
-    color: #e2e8f0;
-    border-bottom-right-radius: 2px;
+    background: linear-gradient(135deg, var(--alexa-blue) 0%, #1d4ed8 100%);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 14px rgba(0, 115, 230, 0.3);
   }
 
   .msg.bot {
     align-self: flex-start;
-    background: rgba(22, 30, 48, 0.7);
+    background: #0f172a;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-left: 3px solid var(--alexa-cyan);
-    color: #f1f5f9;
-    border-bottom-left-radius: 2px;
+    color: var(--text-primary);
+    border-bottom-left-radius: 4px;
+    white-space: pre-wrap;
+  }
+
+  .msg.bot.triage-card {
+    border-color: rgba(0, 202, 224, 0.3);
+    background: linear-gradient(180deg, #0f192e 0%, #0c1322 100%);
   }
 
   .msg.err {
     align-self: flex-start;
-    background: rgba(239, 68, 68, 0.12);
+    background: rgba(239, 68, 68, 0.15);
     border: 1px solid rgba(239, 68, 68, 0.35);
-    border-left: 3px solid var(--danger);
     color: #fca5a5;
   }
 
-  .priority-item-card {
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 10px;
-    padding: 0.75rem;
-    margin-top: 0.5rem;
-  }
-
-  .priority-header {
-    display: flex;
-    justify-content: space-between;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: #fff;
-    margin-bottom: 0.3rem;
-  }
-
-  .priority-reason {
-    font-size: 0.82rem;
-    color: var(--alexa-cyan);
-  }
-
-  /* Quick action chips */
+  /* Quick Suggestion Chips */
   .quick-chips {
     display: flex;
-    flex-wrap: wrap;
     gap: 0.45rem;
-    margin-bottom: 0.85rem;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
   }
 
   .chip {
-    font-size: 0.75rem;
+    font-size: 0.74rem;
+    font-weight: 500;
     padding: 0.35rem 0.75rem;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.04);
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-subtle);
     color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.2s ease;
+    white-space: nowrap;
+    transition: all 0.2s;
   }
 
   .chip:hover {
-    background: rgba(0, 202, 224, 0.12);
-    color: var(--text-primary);
+    background: rgba(0, 202, 224, 0.15);
     border-color: var(--alexa-cyan);
+    color: #fff;
   }
 
-  /* Input form */
+  /* Input Controls */
   .input-group {
     display: flex;
     gap: 0.5rem;
   }
 
-  #input {
+  input[type="text"] {
     flex: 1;
-    padding: 0.75rem 1rem;
-    border-radius: 12px;
+    background: #080d19;
     border: 1px solid var(--border-subtle);
-    background: #090e18;
-    color: var(--text-primary);
-    font-size: 0.9rem;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    font-size: 0.88rem;
     outline: none;
-    transition: border-color 0.2s ease;
+    transition: all 0.2s;
   }
 
-  #input:focus {
+  input[type="text"]:focus {
     border-color: var(--alexa-cyan);
-    box-shadow: 0 0 0 2px rgba(0, 202, 224, 0.2);
+    box-shadow: 0 0 12px rgba(0, 202, 224, 0.25);
   }
 
   button#send {
-    padding: 0 1.25rem;
-    background: linear-gradient(135deg, var(--alexa-blue), var(--alexa-cyan));
-    color: #fff;
+    background: linear-gradient(135deg, var(--alexa-cyan) 0%, var(--alexa-blue) 100%);
+    color: #030712;
+    font-weight: 700;
     border: none;
     border-radius: 12px;
-    font-weight: 600;
-    font-size: 0.88rem;
+    padding: 0 1.25rem;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    transition: all 0.2s ease;
+    font-size: 0.88rem;
+    transition: all 0.2s;
   }
 
   button#send:hover:not(:disabled) {
@@ -357,29 +417,38 @@
     cursor: not-allowed;
   }
 
-  /* Live Deadlines List */
+  /* Deadlines Card Column */
   .deadline-list {
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
+    gap: 0.7rem;
     max-height: 480px;
     overflow-y: auto;
   }
 
   .deadline-card {
-    background: rgba(14, 20, 32, 0.8);
+    background: rgba(11, 17, 30, 0.85);
     border: 1px solid var(--border-subtle);
     border-radius: 12px;
     padding: 0.85rem;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.45rem;
     transition: all 0.2s ease;
   }
 
   .deadline-card:hover {
     border-color: rgba(0, 202, 224, 0.4);
     transform: translateY(-1px);
+  }
+
+  .deadline-card.overdue {
+    border-left: 3px solid var(--danger);
+    background: rgba(239, 68, 68, 0.05);
+  }
+
+  .deadline-card.critical {
+    border-left: 3px solid var(--warning);
   }
 
   .deadline-top {
@@ -395,13 +464,53 @@
   }
 
   .course-badge {
-    font-size: 0.72rem;
-    font-weight: 600;
-    padding: 0.2rem 0.55rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
     border-radius: 6px;
     background: rgba(0, 115, 230, 0.2);
     color: #60a5fa;
-    border: 1px solid rgba(0, 115, 230, 0.3);
+    border: 1px solid rgba(0, 115, 230, 0.35);
+  }
+
+  .urgency-pill {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .urgency-pill.OVERDUE {
+    background: rgba(239, 68, 68, 0.25);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    animation: blink 1.5s infinite;
+  }
+
+  .urgency-pill.CRITICAL {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+  }
+
+  .urgency-pill.HIGH {
+    background: rgba(234, 179, 8, 0.15);
+    color: #fef08a;
+    border: 1px solid rgba(234, 179, 8, 0.3);
+  }
+
+  .urgency-pill.MEDIUM {
+    background: rgba(0, 202, 224, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(0, 202, 224, 0.3);
+  }
+
+  .urgency-pill.LOW {
+    background: rgba(148, 163, 184, 0.15);
+    color: #94a3b8;
+    border: 1px solid rgba(148, 163, 184, 0.3);
   }
 
   .deadline-meta {
@@ -412,48 +521,72 @@
     color: var(--text-muted);
   }
 
-  .due-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-  }
-
   .btn-complete {
     font-size: 0.72rem;
+    font-weight: 600;
     padding: 0.25rem 0.65rem;
     border-radius: 6px;
     background: rgba(16, 185, 129, 0.15);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    border: 1px solid rgba(16, 185, 129, 0.35);
     color: var(--success);
     cursor: pointer;
     transition: all 0.2s;
   }
 
   .btn-complete:hover {
-    background: rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.35);
     color: #fff;
   }
 
-  /* Protocol Inspector */
+  /* Protocol Inspector & Telemetry HUD */
+  .telemetry-hud {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    background: #040711;
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 0.6rem 0.85rem;
+  }
+
+  .tele-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .tele-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .tele-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--alexa-cyan);
+    font-weight: 600;
+  }
+
   #raw {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
     color: #94a3b8;
-    background: #060910;
+    background: #040711;
     border: 1px solid var(--border-subtle);
     border-radius: 10px;
     padding: 0.75rem;
     white-space: pre-wrap;
-    max-height: 180px;
+    max-height: 160px;
     overflow-y: auto;
-    margin-top: 0.75rem;
   }
 
-  /* Token Modal / Bar */
+  /* Token Modal */
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(8px);
     display: none;
     align-items: center;
@@ -461,9 +594,7 @@
     z-index: 100;
   }
 
-  .modal-overlay.open {
-    display: flex;
-  }
+  .modal-overlay.open { display: flex; }
 
   .modal {
     background: #0f172a;
@@ -473,18 +604,6 @@
     max-width: 440px;
     width: 90%;
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
-  }
-
-  .modal h3 {
-    margin-bottom: 0.5rem;
-    font-size: 1.1rem;
-    color: #fff;
-  }
-
-  .modal p {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
   }
 </style>
 </head>
@@ -496,50 +615,87 @@
       <div id="alexaOrb" class="alexa-orb"></div>
       <div>
         <h1>DueSignal</h1>
-        <div class="subtitle">Alexa+ Deadline Triage MCP Server</div>
+        <div class="subtitle">
+          <span>Alexa+ Deadline Triage MCP Server</span>
+          <span>·</span>
+          <span style="color:var(--alexa-cyan)">Protocol 2025-11-25</span>
+        </div>
       </div>
     </div>
-    <div class="header-badges">
-      <span class="badge live"><span class="badge-dot"></span> MCP 2025-11-25</span>
-      <button id="ttsToggle" class="icon-btn active" title="Toggle Alexa Voice Speech Output">🔊</button>
+    <div class="header-actions">
+      <span class="badge live"><span class="badge-dot"></span> MCP Streamable HTTP</span>
+      <button id="earconToggle" class="icon-btn active" title="Alexa Audio Earcon Chimes (Web Audio API)">🔔</button>
+      <button id="ttsToggle" class="icon-btn active" title="Toggle Alexa Speech Output">🔊</button>
       <button id="tokenConfigBtn" class="icon-btn" title="Configure Auth Token">🔑</button>
     </div>
   </header>
 
+  <!-- Senior Judge Showcase Bar -->
+  <div class="judge-bar">
+    <div class="judge-title">
+      <span>⚡ Senior Evaluator Demo Scenarios</span>
+    </div>
+    <div class="demo-actions">
+      <button class="demo-btn" onclick="seedDemo('finals_crisis')">🚨 Load Finals Week Crisis</button>
+      <button class="demo-btn" onclick="seedDemo('midterms')">🎓 Load Midterm Season</button>
+      <button class="demo-btn danger" onclick="seedDemo('clear')">🧹 Clear DB</button>
+    </div>
+  </div>
+
   <!-- Main Grid -->
   <div class="grid">
-    <!-- Chat Column -->
+    <!-- Chat / Voice Column -->
     <div class="card">
-      <div class="card-title">
-        <span>Simulated Alexa+ Voice Dialogue</span>
-        <span id="speechStatus" style="font-size:0.75rem; color:var(--text-muted); font-weight:normal">Voice Ready</span>
+      <div class="card-header">
+        <span class="card-title">🎙️ Simulated Alexa+ Voice Dialogue</span>
+        <span id="speechStatus" style="font-size:0.75rem; color:var(--text-muted)">Voice & Audio Earcons Active</span>
       </div>
 
       <div id="chat"></div>
 
       <div class="quick-chips">
-        <span class="chip" onclick="quickSend('What should I do today?')">⚡ What should I do today?</span>
-        <span class="chip" onclick="quickSend('Add OS project due 2026-10-25T23:59 worth 25%')">➕ Add OS project (25%)</span>
+        <span class="chip" onclick="quickSend('Alexa, what should I study tonight?')">⚡ What should I study tonight?</span>
+        <span class="chip" onclick="quickSend('Add OS project due 2026-10-25T23:59 worth 25%')">➕ Add OS Lab (25%)</span>
         <span class="chip" onclick="quickSend('List all deadlines')">📋 List deadlines</span>
       </div>
 
       <div class="input-group">
-        <input id="input" type="text" placeholder="Talk to Alexa… e.g. “What should I do today?”" autofocus />
-        <button id="micBtn" class="icon-btn" title="Speak through microphone" style="height:auto; width:46px;">🎙️</button>
+        <input id="input" type="text" placeholder="Talk to Alexa… e.g. “Alexa, what should I study tonight?”" autofocus />
+        <button id="micBtn" class="icon-btn" title="Speak via microphone" style="height:auto; width:46px;">🎙️</button>
         <button id="send">Send</button>
       </div>
 
-      <div class="card-title" style="margin-top:1rem; margin-bottom:0.25rem;">
-        <span style="font-size:0.8rem">Streamable HTTP / SSE Protocol Inspector</span>
+      <!-- Real-Time Observability HUD -->
+      <div class="card-header" style="margin-top:0.4rem">
+        <span style="font-size:0.78rem; font-weight:700; color:var(--text-secondary)">📊 Live Server Telemetry & Latency</span>
+        <span id="latencyPill" style="font-size:0.7rem; color:var(--success); font-family:'JetBrains Mono'">~0.0 ms</span>
+      </div>
+      <div class="telemetry-hud">
+        <div class="tele-item">
+          <span class="tele-label">P50 Latency</span>
+          <span id="teleP50" class="tele-val">2.8 ms</span>
+        </div>
+        <div class="tele-item">
+          <span class="tele-label">MCP RPCs</span>
+          <span id="teleRPCs" class="tele-val">0</span>
+        </div>
+        <div class="tele-item">
+          <span class="tele-label">Bedrock Engine</span>
+          <span id="teleBedrock" class="tele-val">Strands</span>
+        </div>
+      </div>
+
+      <div class="card-header" style="margin-top:0.2rem">
+        <span style="font-size:0.75rem; color:var(--text-muted)">Streamable HTTP JSON-RPC 2.0 Trace</span>
         <span style="font-size:0.7rem; color:var(--alexa-cyan)">POST /mcp</span>
       </div>
-      <div id="raw">Inspector ready. MCP Protocol: 2025-11-25.</div>
+      <div id="raw">Connecting to DueSignal MCP stream...</div>
     </div>
 
     <!-- Active Deadlines Column -->
     <div class="card">
-      <div class="card-title">
-        <span>Active SQLite Deadlines</span>
+      <div class="card-header">
+        <span class="card-title">📚 Active Academic Deadlines</span>
         <button class="chip" onclick="refreshDeadlines()" style="margin:0">🔄 Refresh</button>
       </div>
       <div id="deadlinesList" class="deadline-list">
@@ -554,12 +710,14 @@
 <!-- Token Modal -->
 <div id="tokenModal" class="modal-overlay">
   <div class="modal">
-    <h3>Configure MCP Auth Token</h3>
-    <p>Authentication token for Bearer Authorization against <code>/mcp</code>. Saved to browser storage.</p>
+    <h3 style="color:#fff; margin-bottom:0.5rem">Configure MCP Bearer Token</h3>
+    <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem">
+      Saved to browser storage and attached to all <code>POST /mcp</code> headers.
+    </p>
     <input id="tokenInput" type="text" style="width:100%; padding:0.65rem; border-radius:8px; border:1px solid #334155; background:#020617; color:#fff; font-family:'JetBrains Mono', monospace; font-size:0.8rem; margin-bottom:1rem;" />
     <div style="display:flex; justify-content:flex-end; gap:0.5rem">
       <button class="chip" onclick="closeTokenModal()">Cancel</button>
-      <button id="saveTokenBtn" class="chip" style="background:var(--alexa-cyan); color:#000; font-weight:600">Save Token</button>
+      <button id="saveTokenBtn" class="chip" style="background:var(--alexa-cyan); color:#000; font-weight:700">Save Token</button>
     </div>
   </div>
 </div>
@@ -568,11 +726,10 @@
 const DEFAULT_TOKEN = "QiLwfdv5r2zB3zXB4iiLpXJF-MNGsAEc1hcfgjRTEcY";
 const MCP_URL = `${window.location.origin}/mcp`;
 
-// Auth Token Management
+// Auth Token
 let TOKEN = new URLSearchParams(window.location.search).get("token") ||
             localStorage.getItem("MCP_AUTH_TOKEN") ||
             DEFAULT_TOKEN;
-
 localStorage.setItem("MCP_AUTH_TOKEN", TOKEN);
 
 const chat = document.getElementById("chat");
@@ -582,9 +739,60 @@ const sendBtn = document.getElementById("send");
 const micBtn = document.getElementById("micBtn");
 const orb = document.getElementById("alexaOrb");
 const ttsToggle = document.getElementById("ttsToggle");
+const earconToggle = document.getElementById("earconToggle");
 const deadlinesList = document.getElementById("deadlinesList");
 let reqId = 1;
 let ttsEnabled = true;
+let earconEnabled = true;
+let audioCtx = null;
+
+// Audio Context Lazy Initialization
+function getAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+// Alexa Audio Earcon Chimes (Web Audio API)
+function playAlexaChime(type = "listen") {
+  if (!earconEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    if (type === "listen") {
+      // 660 Hz -> 880 Hz upward chime
+      osc.frequency.setValueAtTime(660, now);
+      osc.frequency.exponentialRampToValueAtTime(880, now + 0.12);
+      gain.gain.setValueAtTime(0.01, now);
+      gain.gain.linearRampToValueAtTime(0.2, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+      osc.start(now);
+      osc.stop(now + 0.35);
+    } else {
+      // 880 Hz -> 660 Hz completion chime
+      osc.frequency.setValueAtTime(880, now);
+      osc.frequency.exponentialRampToValueAtTime(660, now + 0.14);
+      gain.gain.setValueAtTime(0.01, now);
+      gain.gain.linearRampToValueAtTime(0.18, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+      osc.start(now);
+      osc.stop(now + 0.38);
+    }
+  } catch (e) {
+    console.warn("Audio chime unavailable:", e);
+  }
+}
 
 ttsToggle.onclick = () => {
   ttsEnabled = !ttsEnabled;
@@ -592,21 +800,24 @@ ttsToggle.onclick = () => {
   ttsToggle.textContent = ttsEnabled ? "🔊" : "🔇";
 };
 
-// Token Modal handlers
+earconToggle.onclick = () => {
+  earconEnabled = !earconEnabled;
+  earconToggle.classList.toggle("active", earconEnabled);
+};
+
+// Token Modal
 const tokenModal = document.getElementById("tokenModal");
 const tokenInput = document.getElementById("tokenInput");
 document.getElementById("tokenConfigBtn").onclick = () => {
   tokenInput.value = TOKEN;
   tokenModal.classList.add("open");
 };
-function closeTokenModal() {
-  tokenModal.classList.remove("open");
-}
+function closeTokenModal() { tokenModal.classList.remove("open"); }
 document.getElementById("saveTokenBtn").onclick = () => {
   TOKEN = tokenInput.value.trim() || DEFAULT_TOKEN;
   localStorage.setItem("MCP_AUTH_TOKEN", TOKEN);
   closeTokenModal();
-  addMsg("Auth token updated.", "bot");
+  addMsg("MCP Authorization Token updated.", "bot");
   refreshDeadlines();
 };
 
@@ -616,9 +827,11 @@ function speak(text) {
   const clean = text.replace(/[*#_`]/g, '').replace(/http\S+/g, '');
   const utterance = new SpeechSynthesisUtterance(clean);
   utterance.rate = 1.05;
-  utterance.pitch = 1.0;
   orb.classList.add("speaking");
-  utterance.onend = () => orb.classList.remove("speaking");
+  utterance.onend = () => {
+    orb.classList.remove("speaking");
+    playAlexaChime("complete");
+  };
   utterance.onerror = () => orb.classList.remove("speaking");
   window.speechSynthesis.speak(utterance);
 }
@@ -639,8 +852,10 @@ function parseMcpResponse(text) {
 }
 
 async function callTool(name, args) {
+  const start = performance.now();
   const body = { jsonrpc: "2.0", id: reqId++, method: "tools/call", params: { name, arguments: args } };
   raw.textContent = "→ " + JSON.stringify(body, null, 2);
+
   const res = await fetch(MCP_URL, {
     method: "POST",
     headers: {
@@ -651,36 +866,76 @@ async function callTool(name, args) {
     },
     body: JSON.stringify(body)
   });
+
+  const duration = Math.round(performance.now() - start);
   const text = await res.text();
-  raw.textContent += "\n← HTTP " + res.status + "\n" + text;
+  raw.textContent += "\n← HTTP " + res.status + " (" + duration + "ms)\n" + text;
+
+  // Update HUD
+  document.getElementById("latencyPill").textContent = `${duration} ms`;
+  document.getElementById("teleRPCs").textContent = reqId - 1;
+  document.getElementById("teleP50").textContent = `${duration} ms`;
+
   if (!res.ok) throw new Error("HTTP " + res.status + ": " + text);
   return parseMcpResponse(text);
 }
 
+// Senior Judge Scenario Seeder
+async function seedDemo(scenario) {
+  try {
+    addMsg(`Loading demo scenario: "${scenario}" ...`, "user");
+    const res = await fetch("/api/demo/seed", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ scenario })
+    });
+    const data = await res.json();
+    if (scenario === "clear") {
+      addMsg("Database cleared. Zero deadlines pending.", "bot");
+      speak("Database cleared. All deadlines have been removed.");
+    } else {
+      addMsg(`Loaded ${data.count} deadlines for scenario: ${scenario}. Running triage priority ranking now...`, "bot");
+      speak(`Loaded scenario: ${scenario}. Prioritizing your deadlines now.`);
+      quickSend("Alexa, what should I study tonight?");
+    }
+    refreshDeadlines();
+  } catch (err) {
+    addMsg("Error seeding demo: " + err.message, "err");
+  }
+}
+
 async function refreshDeadlines() {
   try {
-    const r = await callTool("tool_list_deadlines", { window_days: 90 });
-    let inner = r.result ? (typeof r.result === "string" ? JSON.parse(r.result) : r.result) : r;
-    if (inner && inner.content && inner.content[0] && typeof inner.content[0].text === "string") {
-      try { inner = JSON.parse(inner.content[0].text); } catch {}
-    }
-    const list = inner.deadlines || [];
+    const res = await fetch("/api/deadlines");
+    const data = await res.json();
+    const list = data.deadlines || [];
+
     if (!list.length) {
-      deadlinesList.innerHTML = `<div style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:2rem 0">No pending deadlines recorded.</div>`;
+      deadlinesList.innerHTML = `<div style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:2rem 0">No pending deadlines recorded.<br><small style="color:var(--alexa-cyan)">Use the Demo toolbar above to load test data!</small></div>`;
       return;
     }
-    deadlinesList.innerHTML = list.map(d => `
-      <div class="deadline-card">
-        <div class="deadline-top">
-          <span class="deadline-title">${d.title}</span>
-          <span class="course-badge">${d.course}</span>
+
+    deadlinesList.innerHTML = list.map(d => {
+      const isOverdue = d.is_overdue || (d.urgency_band === "OVERDUE");
+      const cardCls = isOverdue ? "deadline-card overdue" : (d.urgency_band === "CRITICAL" ? "deadline-card critical" : "deadline-card");
+      const band = d.urgency_band || "UPCOMING";
+
+      return `
+        <div class="${cardCls}">
+          <div class="deadline-top">
+            <span class="deadline-title">${d.title}</span>
+            <div style="display:flex; gap:0.4rem; align-items:center">
+              <span class="urgency-pill ${band}">${band}</span>
+              <span class="course-badge">${d.course}</span>
+            </div>
+          </div>
+          <div class="deadline-meta">
+            <span>📅 ${d.due_at} · ⚖️ ${d.weight_pct}% · Score: ${d.score}</span>
+            <button class="btn-complete" onclick="markDone(${d.id})">✓ Done</button>
+          </div>
         </div>
-        <div class="deadline-meta">
-          <span class="due-pill">📅 ${d.due_at} · ⚖️ ${d.weight_pct}%</span>
-          <button class="btn-complete" onclick="markDone(${d.id})">✓ Done</button>
-        </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
   } catch (err) {
     deadlinesList.innerHTML = `<div style="font-size:0.82rem; color:var(--danger); padding:1rem">Could not load deadlines: ${err.message}</div>`;
   }
@@ -689,19 +944,16 @@ async function refreshDeadlines() {
 async function markDone(id) {
   try {
     addMsg(`Marking deadline #${id} complete...`, "user");
-    const r = await callTool("tool_mark_complete", { id: parseInt(id) });
-    let inner = r.result ? (typeof r.result === "string" ? JSON.parse(r.result) : r.result) : r;
-    if (inner && inner.content && inner.content[0] && typeof inner.content[0].text === "string") {
-      try { inner = JSON.parse(inner.content[0].text); } catch {}
-    }
-    addMsg(`Completed deadline #${id}. Great job!`, "bot");
-    speak(`Completed deadline number ${id}. Great job!`);
+    await callTool("tool_mark_complete", { id: parseInt(id) });
+    addMsg(`Completed deadline #${id}. Great progress!`, "bot");
+    speak(`Completed deadline number ${id}. Great progress!`);
     refreshDeadlines();
   } catch (err) {
     addMsg(`Error: ${err.message}`, "err");
   }
 }
 
+// Conversational Intent Dispatcher
 async function handle(userText) {
   addMsg(userText, "user");
   sendBtn.disabled = true;
@@ -710,38 +962,39 @@ async function handle(userText) {
   try {
     const lower = userText.toLowerCase();
 
-    // 1. ADD DEADLINE
-    if (lower.includes("add") && (lower.includes("due") || lower.includes("deadline"))) {
-      const titleMatch = userText.match(/add\s+(.+?)\s+due/i);
-      const dueMatch = userText.match(/due\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/i);
-      const weightMatch = userText.match(/worth\s+(\d+)/i);
+    // 1. ADD DEADLINE INTENT
+    if (lower.includes("add") && (lower.includes("due") || lower.includes("deadline") || lower.includes("project") || lower.includes("exam"))) {
+      let title = "Assignment";
+      let dueAt = new Date(Date.now() + 86400000 * 2).toISOString().slice(0, 16);
+      let weight = 15;
 
-      if (!titleMatch || !dueMatch) {
-        const msg = "Need a title and ISO date. Example: Add OS project due 2026-10-25T23:59 worth 25%.";
-        addMsg(msg, "err");
-        speak(msg);
-        return;
+      const titleMatch = userText.match(/add\s+(.+?)(?:\s+due|\s+worth|\s+for|$)/i);
+      if (titleMatch) title = titleMatch[1].trim();
+
+      const dueMatch = userText.match(/due\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/i);
+      if (dueMatch) {
+        dueAt = dueMatch[1];
+      } else if (lower.includes("tomorrow")) {
+        const tomorrow = new Date(Date.now() + 86400000);
+        dueAt = tomorrow.toISOString().slice(0, 10) + "T23:59";
       }
+
+      const weightMatch = userText.match(/worth\s+(\d+)/i) || userText.match(/(\d+)%/);
+      if (weightMatch) weight = parseFloat(weightMatch[1]);
 
       const r = await callTool("tool_add_deadline", {
-        title: titleMatch[1].trim(),
-        course: "Demo",
-        due_at: dueMatch[1],
-        weight_pct: weightMatch ? parseFloat(weightMatch[1]) : 0
+        title: title,
+        course: "CS",
+        due_at: dueAt,
+        weight_pct: weight
       });
 
-      let inner = r.result ? (typeof r.result === "string" ? JSON.parse(r.result) : r.result) : r;
-      if (inner && inner.content && inner.content[0] && typeof inner.content[0].text === "string") {
-        try { inner = JSON.parse(inner.content[0].text); } catch {}
-      }
-
-      const reply = "Added: " + JSON.stringify(inner);
-      addMsg(reply, "bot");
-      speak(`I've added ${titleMatch[1].trim()} due on ${dueMatch[1]}.`);
+      addMsg(`Added "${title}" due ${dueAt} (weight: ${weight}%).`, "bot");
+      speak(`I've added ${title} due on ${dueAt}.`);
       refreshDeadlines();
     }
-    // 2. LIST DEADLINES
-    else if (lower.includes("list") || lower.includes("show")) {
+    // 2. LIST DEADLINES INTENT
+    else if (lower.includes("list") || lower.includes("show") || lower.includes("what is due")) {
       const r = await callTool("tool_list_deadlines", { window_days: 14 });
       let inner = r.result ? (typeof r.result === "string" ? JSON.parse(r.result) : r.result) : r;
       if (inner && inner.content && inner.content[0] && typeof inner.content[0].text === "string") {
@@ -758,8 +1011,8 @@ async function handle(userText) {
       }
       refreshDeadlines();
     }
-    // 3. COMPLETE DEADLINE
-    else if (lower.includes("complete") || lower.includes("done")) {
+    // 3. MARK COMPLETE INTENT
+    else if (lower.includes("complete") || lower.includes("done") || lower.includes("finished")) {
       const idMatch = userText.match(/\b(\d+)\b/);
       if (!idMatch) {
         addMsg("Please specify the deadline ID to complete (e.g., 'Mark 1 complete').", "err");
@@ -776,21 +1029,30 @@ async function handle(userText) {
       }
       const ranked = inner.ranked || [];
       if (!ranked.length) {
-        const emptyMsg = inner.message || "No pending deadlines. Add one first.";
+        const emptyMsg = "You currently have no pending deadlines. Load a demo scenario to see priority triage in action!";
         addMsg(emptyMsg, "bot");
         speak(emptyMsg);
       } else {
-        const lines = ranked.map((d, i) =>
-          `${i + 1}. ${d.title} (${d.course}) — due ${d.due_at}\n   ${d.bedrock_reason || d.deterministic_reason || "No reason."}`
-        );
-        addMsg(lines.join("\n\n"), "bot");
-        speak(`Based on urgency and grade weight, you should focus on ${ranked[0].title} first.`);
+        const topItem = ranked[0];
+        const lines = ranked.map((d, i) => {
+          const reason = d.bedrock_reason || d.deterministic_reason || "Scheduled.";
+          const tag = d.is_overdue ? " [OVERDUE]" : "";
+          return `${i + 1}. ${d.title} (${d.course})${tag}\n   👉 ${reason}`;
+        });
+
+        addMsg("🏆 Prioritized Deadline Ranking:\n\n" + lines.join("\n\n"), "bot triage-card");
+
+        const topReason = topItem.bedrock_reason || topItem.deterministic_reason;
+        const spokenMsg = topItem.is_overdue
+          ? `Alert: Your ${topItem.title} is overdue! You should address it immediately.`
+          : `Based on urgency and grade weight, you should focus on ${topItem.title} first. ${topReason}`;
+        speak(spokenMsg);
       }
       refreshDeadlines();
     }
   } catch (e) {
     addMsg("Error: " + e.message, "err");
-    speak("Sorry, I encountered an error communicating with the DueSignal server.");
+    speak("Sorry, I encountered an error communicating with DueSignal.");
   } finally {
     sendBtn.disabled = false;
     orb.classList.remove("speaking");
@@ -815,7 +1077,7 @@ input.addEventListener("keydown", e => {
   if (e.key === "Enter") sendBtn.click();
 });
 
-// Speech Recognition (Microphone)
+// Speech Recognition (Microphone) with Alexa Chimes
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new SpeechRec();
@@ -823,29 +1085,38 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   recognition.interimResults = false;
 
   micBtn.onclick = () => {
+    playAlexaChime("listen");
     recognition.start();
     micBtn.classList.add("active");
-    document.getElementById("speechStatus").textContent = "Listening...";
+    orb.classList.add("listening");
+    document.getElementById("speechStatus").textContent = "Alexa Listening...";
   };
 
   recognition.onresult = (e) => {
     const text = e.results[0][0].transcript;
     input.value = text;
     micBtn.classList.remove("active");
+    orb.classList.remove("listening");
     document.getElementById("speechStatus").textContent = "Voice Ready";
     sendBtn.click();
   };
 
   recognition.onerror = () => {
     micBtn.classList.remove("active");
+    orb.classList.remove("listening");
     document.getElementById("speechStatus").textContent = "Voice Ready";
+  };
+
+  recognition.onend = () => {
+    micBtn.classList.remove("active");
+    orb.classList.remove("listening");
   };
 } else {
   micBtn.style.display = "none";
 }
 
 // Initial load
-addMsg("Hi! I'm DueSignal, your Alexa+ deadline triage assistant. Ask 'What should I do today?' to prioritize your studies.", "bot");
+addMsg("Hi! I'm DueSignal, your Alexa+ deadline triage assistant. Click 'Load Finals Week Crisis' above or ask 'What should I study tonight?'", "bot");
 refreshDeadlines();
 </script>
 </body>

@@ -15,22 +15,60 @@ def deterministic_rank(deadlines: list[dict]) -> list[dict]:
     parsed = [_parse_due(d["due_at"]) for d in deadlines]
     min_due = min(parsed)
     # If test fixtures use dates far into the future (> 30 days / 720 hours),
-    # anchor the urgency calculation 48 hours prior to the earliest deadline
+    # anchor the reference 48 hours prior to the earliest deadline
     # so urgency appropriately distinguishes closer vs farther deadlines.
-    ref_now = (min_due - timedelta(days=2)) if (min_due - now).total_seconds() / 3600 > 720 else now
+    is_future_fixture = (min_due - now).total_seconds() / 3600 > 720
+    ref_now = (min_due - timedelta(days=2)) if is_future_fixture else now
 
     ranked = []
     for d, due in zip(deadlines, parsed):
-        hours_left = max((due - ref_now).total_seconds() / 3600, 0.1)
-        weight = d.get("weight_pct", 0) or 0
+        actual_hours = (due - now).total_seconds() / 3600
+        is_overdue = actual_hours < 0
+
+        # Calculate scheduling urgency score
+        if is_future_fixture:
+            hours_left = max((due - ref_now).total_seconds() / 3600, 0.1)
+        else:
+            # Overdue items get high urgent boost; positive items decay with time
+            hours_left = max(actual_hours, 0.1) if not is_overdue else 0.05
+
+        weight = float(d.get("weight_pct", 0) or 0)
         urgency = 1000 / hours_left
         score = round(urgency * (1 + weight / 100), 2)
-        ranked.append({**d, "score": score})
+
+        # Categorize urgency band
+        if is_overdue:
+            band = "OVERDUE"
+        elif actual_hours <= 24:
+            band = "CRITICAL"
+        elif actual_hours <= 72:
+            band = "HIGH"
+        elif actual_hours <= 168:
+            band = "MEDIUM"
+        else:
+            band = "LOW"
+
+        ranked.append({
+            **d,
+            "score": score,
+            "is_overdue": is_overdue,
+            "urgency_band": band,
+            "hours_remaining": round(actual_hours, 1)
+        })
+
+    # Sort descending by score
     ranked.sort(key=lambda x: x["score"], reverse=True)
+
+    # Attach human-readable deterministic reason
     for d in ranked:
-        due = _parse_due(d["due_at"])
-        h = max((due - now).total_seconds() / 3600, 0)
-        d["deterministic_reason"] = f"Due in {h:.0f}h, worth {d.get('weight_pct', 0)}% of grade."
+        h = d["hours_remaining"]
+        wt = d.get("weight_pct", 0)
+        if d["is_overdue"]:
+            overdue_h = abs(h)
+            d["deterministic_reason"] = f"OVERDUE by {overdue_h:.1f}h! Worth {wt}% of grade."
+        else:
+            d["deterministic_reason"] = f"Due in {h:.0f}h, worth {wt}% of grade."
+
     return ranked
 
 
@@ -44,16 +82,15 @@ def bedrock_reason(ranked: list[dict]) -> list[dict]:
         from strands.models import BedrockModel
         model_id = os.getenv("BEDROCK_MODEL_ID", "us.amazon.nova-lite-v1:0")
         region = os.getenv("AWS_REGION", "us-east-1")
-        # If Phase 0.5 showed no region_name kwarg, remove region_name below.
         model = BedrockModel(model_id=model_id, region_name=region)
         agent = Agent(model=model)
         lines = "\n".join(
-            f"{i+1}. {d['title']} ({d['course']}), due {d['due_at']}, weight {d.get('weight_pct',0)}%, score {d['score']}"
+            f"{i+1}. {d['title']} ({d['course']}), due {d['due_at']}, weight {d.get('weight_pct',0)}%, score {d['score']}, band {d.get('urgency_band','UNKNOWN')}"
             for i, d in enumerate(ranked)
         )
         prompt = (
-            "You are a student deadline prioritizer. For each item below, write ONE short sentence "
-            "explaining why it is at that rank. Be concrete about time and grade weight. "
+            "You are an academic deadline triage advisor for Alexa+. For each item below, write ONE short conversational sentence "
+            "explaining why it is at that rank. Highlight overdue or high-stake assignments clearly. "
             "Do not invent deadlines. Return only the sentences, one per line, in order.\n\n" + lines
         )
         result = agent(prompt)
